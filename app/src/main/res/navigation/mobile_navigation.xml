@@ -3,29 +3,27 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/navigation_history">
+    app:startDestination="@+id/navigation_home">
 
     <fragment
-        android:id="@+id/navigation_history"
-        android:name="com.example.wegourmet.ui.home.HomeFragment"
-        android:label="@string/title_history"
+        android:id="@+id/navigation_home"
+        android:name="com.project.wegourmet.ui.home.HomeFragment"
+        android:label="@string/title_home"
         tools:layout="@layout/fragment_home" />
 
     <fragment
-        android:id="@+id/navigation_search"
-        android:name="com.example.wegourmet.ui.home.HomeFragment"
-        android:label="@string/title_search"
-        tools:layout="@layout/fragment_search" />
-
+        android:id="@+id/navigation_dashboard"
+        android:name="com.project.wegourmet.ui.dashboard.DashboardFragment"
+        android:label="@string/title_dashboard"
+        tools:layout="@layout/fragment_dashboard" />
     <fragment
         android:id="@+id/navigation_favorites"
-        android:name="com.example.wegourmet.ui.dashboard.DashboardFragment"
-        android:label="@string/title_favorites"
-        tools:layout="@layout/fragment_dashboard" />
-
+        android:name="com.project.wegourmet.ui.favorites.FavoritesFragment"
+        android:label="@string/navbar_title_favorites"
+        tools:layout="@layout/fragment_favorites" />
     <fragment
-        android:id="@+id/navigation_profile"
-        android:name="com.example.wegourmet.ui.notifications.NotificationsFragment"
-        android:label="@string/title_profile"
+        android:id="@+id/navigation_notifications"
+        android:name="com.project.wegourmet.ui.notifications.NotificationsFragment"
+        android:label="@string/title_notifications"
         tools:layout="@layout/fragment_notifications" />
 </navigation>
