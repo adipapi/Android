@@ -1,17 +1,23 @@
 package com.project.wegourmet.ui.register;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -22,20 +28,23 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.project.wegourmet.MainActivity;
 import com.project.wegourmet.R;
 import com.project.wegourmet.Repository.model.UserModel;
-import com.project.wegourmet.databinding.FragmentLoginBinding;
 import com.project.wegourmet.databinding.FragmentRegisterBinding;
 import com.project.wegourmet.model.User;
-import com.project.wegourmet.ui.login.LoginViewModel;
 
 public class RegisterFragment extends Fragment {
+    private static final int REQUEST_CAMERA = 1;
     private FragmentRegisterBinding binding;
     private boolean isHost;
+    ImageView profileImage;
     RadioGroup radioGroup;
     Button loginBtn;
+    Bitmap imageBitmap;
     EditText email;
     EditText pass;
     EditText username;
     Button registerBtn;
+    ImageButton camBtn;
+    ImageButton galleryBtn;
     RadioButton guestRadio;
     RadioButton hostRadio;
 
@@ -56,11 +65,9 @@ public class RegisterFragment extends Fragment {
                 switch(checkedId) {
                     case R.id.radio_guest:
                         isHost = false;
-                        // switch to fragment 1
                         break;
                     case R.id.radio_host:
                         isHost = true;
-                        // Fragment 2
                         break;
                 }
             }
@@ -72,6 +79,9 @@ public class RegisterFragment extends Fragment {
         username = root.findViewById(R.id.usernameRegister);
         guestRadio = root.findViewById(R.id.radio_guest);
         hostRadio = root.findViewById(R.id.radio_host);
+        profileImage = root.findViewById(R.id.registerProfileImage);
+        camBtn = root.findViewById(R.id.register_cam_btn);
+        galleryBtn = root.findViewById(R.id.register_gallery_btn);
 
         registerBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -87,14 +97,7 @@ public class RegisterFragment extends Fragment {
                                 .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                                     @Override
                                     public void onSuccess(AuthResult authResult) {
-                                        User user;
-                                        String id = FirebaseAuth.getInstance().getUid().toString();
-                                        user = new User(id, username.getText().toString(), isHost);
-                                        UserModel.instance.addUser(user, (e) -> {
-                                            toMainActivity();
-                                        }, (e) -> {
-                                            Toast.makeText(getActivity().getApplicationContext(), "Register failed", Toast.LENGTH_SHORT).show();
-                                        });
+                                        save();
                                     }
                                 })
                                 .addOnFailureListener(new OnFailureListener() {
@@ -107,7 +110,58 @@ public class RegisterFragment extends Fragment {
             };
         });
 
+        camBtn.setOnClickListener(v -> {
+            openCam();
+        });
+
+        galleryBtn.setOnClickListener(v -> {
+                openGallery();
+        });
+
         return root;
+    }
+
+    private void openGallery() {
+    }
+
+    private void openCam() {
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(intent,REQUEST_CAMERA);
+    }
+
+    private void save() {
+        User user;
+        String id = FirebaseAuth.getInstance().getUid().toString();
+        user = new User(id, username.getText().toString(), isHost);
+        if (imageBitmap == null) {
+            saveUser(user);
+        } else {
+            UserModel.instance.saveImage(imageBitmap, user.getId() + ".jpg", url -> {
+                user.setProfileImageUrl(url);
+                saveUser(user);
+            });
+        }
+    }
+
+    private void saveUser(User user) {
+        UserModel.instance.addUser(user, (e) -> {
+            toMainActivity();
+        }, (e) -> {
+            Toast.makeText(getActivity().getApplicationContext(), "Register failed", Toast.LENGTH_SHORT).show();
+        });
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CAMERA){
+            if (resultCode == Activity.RESULT_OK){
+                Bundle extras = data.getExtras();
+                imageBitmap = (Bitmap) extras.get("data");
+                profileImage.setImageBitmap(imageBitmap);
+
+            }
+        }
     }
 
     private void toMainActivity() {
