@@ -9,6 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.WeGourmet" >
+        <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyDMxuUfyoC0laD-_djKEBx8DKB6Fr5AljQ"/>
         <activity
             android:windowSoftInputMode="adjustPan"
             android:name=".MainActivity"

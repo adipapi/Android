@@ -22,10 +22,10 @@ public class HomeViewModel extends ViewModel {
         mText = new MutableLiveData<>();
         restaurants = new MutableLiveData<>();
         restaurants.setValue(new ArrayList<Restaurant>(Arrays.asList(
-                new Restaurant("Restaurant 1", new Location("1st Street", "Rishon LeZion", new Coordinate(2.999f, 2.0000f)), R.drawable.bg_img),
-                new Restaurant("Restaurant 2", new Location("2nd Street", "Holon", new Coordinate(1.999f, 2.0000f)), R.drawable.hamburger),
-                new Restaurant("Restaurant 3", new Location("Nice Avenue", "Tel Avivo", new Coordinate(4.2069f, 1.0323f)), R.drawable.bg_img),
-                new Restaurant("Restaurant 4", new Location("KKK Avenue", "Tel Avivo", new Coordinate(4.2069f, 1.0323f)), R.drawable.hamburger)
+                new Restaurant("Restaurant 1", new Location("1st Street", "Rishon LeZion", new Coordinate(2.999f, 2.0000f)), R.drawable.bg_img, new ArrayList<String>(Arrays.asList("A", "B")),true),
+                new Restaurant("Restaurant 2", new Location("2nd Street", "Holon", new Coordinate(1.999f, 2.0000f)), R.drawable.hamburger, new ArrayList<String>(Arrays.asList("C", "B")),true),
+                new Restaurant("Restaurant 3", new Location("Nice Avenue", "Tel Avivo", new Coordinate(4.2069f, 1.0323f)), R.drawable.bg_img, new ArrayList<String>(Arrays.asList("D", "B")),false),
+                new Restaurant("Restaurant 4", new Location("KKK Avenue", "Tel Avivo", new Coordinate(4.2069f, 1.0323f)), R.drawable.hamburger, new ArrayList<String>(Arrays.asList("A", "B")),false)
         )));
         mText.setValue("This is home fragment");
     }
