@@ -18,4 +18,13 @@ public class UserModelFirebase {
                 .addOnSuccessListener(successListener)
                 .addOnFailureListener(failureListener);
     }
+
+    public void getUserByID(String id,OnSuccessListener successListener, OnFailureListener failureListener) {
+        db.collection(COLLECTION_NAME)
+                .whereEqualTo("uid", id)
+                .limit(1)
+                .get()
+                .addOnSuccessListener(successListener)
+                .addOnFailureListener(failureListener);
+    };
 }
