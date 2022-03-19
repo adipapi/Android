@@ -3,13 +3,14 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 import androidx.annotation.NonNull;
 
-@Entity
+@Entity(tableName = "users")
 public class User {
     @PrimaryKey
     @NonNull
     String id;
     String username;
     boolean isHost;
+    String profileImageUrl;
 
     public User(){}
 
@@ -17,6 +18,14 @@ public class User {
         this.username = username;
         this.id = id;
         this.isHost = isHost;
+    }
+
+    public String getProfileImageUrl() {
+        return profileImageUrl;
+    }
+
+    public void setProfileImageUrl(String profileImageUrl) {
+        this.profileImageUrl = profileImageUrl;
     }
 
     public String getId() {

@@ -7,12 +7,22 @@
     android:layout_height="match_parent"
     tools:context=".ui.register.RegisterFragment">
 
+    <ImageButton
+        android:id="@+id/register_gallery_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:src="@android:drawable/ic_menu_gallery"
+        app:layout_constraintBottom_toBottomOf="@+id/registerProfileImage"
+        app:layout_constraintStart_toEndOf="@+id/registerProfileImage"
+        app:layout_constraintTop_toBottomOf="@+id/registerProfileImage" />
+
     <Button
         android:id="@+id/backToLogin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="31dp"
-        android:layout_marginBottom="151dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="50dp"
         android:text="Login"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/register" />
@@ -21,7 +31,7 @@
         android:id="@+id/register"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="88dp"
+        android:layout_marginEnd="84dp"
         android:text="Register"
         app:layout_constraintBaseline_toBaselineOf="@+id/backToLogin"
         app:layout_constraintEnd_toEndOf="parent" />
@@ -30,10 +40,9 @@
         android:id="@+id/passRegister"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="63dp"
+        android:layout_marginTop="21dp"
         android:ems="10"
         android:inputType="textPassword"
-        app:layout_constraintBottom_toTopOf="@+id/radioGroup"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textView"
         app:layout_constraintTop_toBottomOf="@+id/emailRegister" />
@@ -43,6 +52,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="13dp"
+        android:layout_marginTop="4dp"
         android:layout_marginEnd="6dp"
         android:text="password"
         app:layout_constraintEnd_toStartOf="@+id/passRegister"
@@ -54,10 +64,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="7dp"
-        android:layout_marginTop="138dp"
+        android:layout_marginTop="380dp"
         android:layout_marginEnd="25dp"
         android:text="email"
         app:layout_constraintEnd_toStartOf="@+id/emailRegister"
+        app:layout_constraintHorizontal_bias="0.464"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -65,25 +76,24 @@
         android:id="@+id/emailRegister"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="134dp"
-        android:layout_marginBottom="33dp"
+        android:layout_marginTop="368dp"
+        android:layout_marginEnd="3dp"
         android:ems="10"
         android:inputType="textEmailAddress"
-        app:layout_constraintBottom_toTopOf="@+id/passRegister"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/textView4"
+        app:layout_constraintEnd_toEndOf="@+id/passRegister"
         app:layout_constraintTop_toTopOf="parent" />
 
     <RadioGroup
         android:id="@+id/radioGroup"
-        android:layout_width="234dp"
-        android:layout_height="0dp"
-        android:layout_marginEnd="36dp"
-        android:layout_marginBottom="307dp"
+        android:layout_width="212dp"
+        android:layout_height="125dp"
+        android:layout_marginEnd="48dp"
+        android:layout_marginBottom="80dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/usernameRegister">
+        app:layout_constraintTop_toBottomOf="@+id/usernameRegister"
+        app:layout_constraintVertical_bias="0.867">
 
         <RadioButton
             android:id="@+id/radio_guest"
@@ -108,7 +118,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="1dp"
-        android:layout_marginTop="70dp"
+        android:layout_marginTop="312dp"
         android:layout_marginEnd="9dp"
         android:text="username"
         app:layout_constraintEnd_toStartOf="@+id/usernameRegister"
@@ -119,13 +129,31 @@
         android:id="@+id/usernameRegister"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="57dp"
-        android:layout_marginBottom="205dp"
+        android:layout_marginTop="300dp"
         android:ems="10"
         android:inputType="textPersonName"
-        app:layout_constraintBottom_toTopOf="@+id/radioGroup"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textView5"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/registerProfileImage"
+        android:layout_width="178dp"
+        android:layout_height="166dp"
+        android:layout_marginTop="48dp"
+        android:layout_marginEnd="113dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:src="@tools:sample/avatars" />
+
+    <ImageButton
+        android:id="@+id/register_cam_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="14dp"
+        android:src="@android:drawable/ic_menu_camera"
+        app:layout_constraintBottom_toBottomOf="@+id/registerProfileImage"
+        app:layout_constraintEnd_toStartOf="@+id/registerProfileImage"
+        app:layout_constraintTop_toBottomOf="@+id/registerProfileImage" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
