@@ -12,10 +12,20 @@
         tools:layout="@layout/fragment_home" />
 
     <fragment
-        android:id="@+id/navigation_dashboard"
-        android:name="com.project.wegourmet.ui.dashboard.DashboardFragment"
-        android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
+        android:id="@+id/navigation_my_restaurants"
+        android:name="com.project.wegourmet.ui.myRestaurants.MyRestaurantFragment"
+        android:label="@string/title_my_restaurants"
+        tools:layout="@layout/fragment_my_restaurants" >
+        <action
+            android:id="@+id/action_navigation_my_restaurants_to_navigation_restaurant"
+            app:destination="@id/navigation_restaurant" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_restaurant"
+        android:name="com.project.wegourmet.ui.restaurant.RestaurantFragment"
+        android:label="@string/title_restaurant"
+        tools:layout="@layout/fragment_restaurant" />
 
     <fragment
         android:id="@+id/navigation_profile"
