@@ -21,8 +21,6 @@ public class UserModel {
     public Handler mainThread = HandlerCompat.createAsync(Looper.getMainLooper());
     UserModelFirebase modelFirebase = new UserModelFirebase();
 
-    // Data Members
-
     // Methods
     MutableLiveData<User> user = new MutableLiveData<User>();
 
