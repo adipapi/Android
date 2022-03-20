@@ -18,10 +18,12 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.project.wegourmet.MainActivity;
+import com.project.wegourmet.GuestActivity;
+import com.project.wegourmet.HostActivity;
 import com.project.wegourmet.R;
+import com.project.wegourmet.Repository.model.UserModel;
 import com.project.wegourmet.databinding.FragmentLoginBinding;
+import com.project.wegourmet.model.User;
 
 public class LoginFragment extends Fragment{
     private FragmentLoginBinding binding;
@@ -57,7 +59,10 @@ public class LoginFragment extends Fragment{
                         .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                             @Override
                             public void onSuccess(AuthResult authResult) {
-                                toMainActivity();
+                                UserModel.instance.getUserById(authResult.getUser().getUid())
+                                        .observe(getViewLifecycleOwner(), (user) -> {
+                                            toMainActivity(user);
+                                        });
                             }
                         })
                         .addOnFailureListener(new OnFailureListener() {
@@ -72,8 +77,14 @@ public class LoginFragment extends Fragment{
         return root;
     }
 
-    private void toMainActivity() {
-        Intent intent = new Intent(getContext(), MainActivity.class);
+    private void toMainActivity(User user) {
+        Intent intent;
+        if(user.isHost()) {
+            intent = new Intent(getContext(), HostActivity.class);
+        } else {
+            intent = new Intent(getContext(), GuestActivity.class);
+        }
+
         startActivity(intent);
         getActivity().finish();
     }
