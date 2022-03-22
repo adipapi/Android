@@ -20,8 +20,11 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.project.wegourmet.GuestActivity;
+import com.project.wegourmet.HostActivity;
 import com.project.wegourmet.R;
 import com.project.wegourmet.Repository.model.UserModel;
+import com.project.wegourmet.UnsignedActivity;
 import com.project.wegourmet.databinding.FragmentProfileBinding;
 import com.project.wegourmet.model.User;
 import com.squareup.picasso.Picasso;
@@ -37,6 +40,7 @@ public class ProfileFragment extends Fragment {
     ImageButton camBtn;
     ImageButton galleryBtn;
     Button saveBtn;
+    Button signOutBtn;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
             ViewGroup container, Bundle savedInstanceState) {
@@ -51,6 +55,7 @@ public class ProfileFragment extends Fragment {
             camBtn = root.findViewById(R.id.main_cam_btn);
             galleryBtn = root.findViewById(R.id.main_gallery_btn);
             saveBtn = root.findViewById(R.id.saveProfileBtn);
+            signOutBtn = root.findViewById(R.id.profile_logout_btn);
 
             profileViewModel.getUserById(FirebaseAuth.getInstance().getCurrentUser().getUid());
             profileViewModel.user.observe(getViewLifecycleOwner(),(user) -> {
@@ -58,6 +63,13 @@ public class ProfileFragment extends Fragment {
                 if(user.getProfileImageUrl() != null) {
                     Picasso.get().load(user.getProfileImageUrl()).into(profileImage);
                 }
+            });
+
+            signOutBtn.setOnClickListener(v -> {
+                FirebaseAuth.getInstance().signOut();
+                Intent intent = new Intent(getContext(), UnsignedActivity.class);
+                startActivity(intent);
+                getActivity().finish();
             });
 
             camBtn.setOnClickListener(v -> {

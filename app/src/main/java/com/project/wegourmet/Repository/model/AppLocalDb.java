@@ -10,7 +10,7 @@ import com.project.wegourmet.WegourmetApplication;
 import com.project.wegourmet.model.Restaurant;
 import com.project.wegourmet.model.User;
 
-@Database(entities = {User.class, Restaurant.class}, version = 5)
+@Database(entities = {User.class, Restaurant.class}, version = 6)
 abstract class AppLocalDbRepository extends RoomDatabase {
     public abstract UserDao userDao();
     public abstract RestaurantDao restaurantDao();
