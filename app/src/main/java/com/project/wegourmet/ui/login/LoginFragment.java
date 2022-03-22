@@ -54,23 +54,27 @@ public class LoginFragment extends Fragment{
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FirebaseAuth.getInstance().signInWithEmailAndPassword(email.getText().toString(),
-                        pass.getText().toString())
-                        .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
-                            @Override
-                            public void onSuccess(AuthResult authResult) {
-                                UserModel.instance.getUserById(authResult.getUser().getUid())
-                                        .observe(getViewLifecycleOwner(), (user) -> {
-                                            toMainActivity(user);
-                                        });
-                            }
-                        })
-                        .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Toast.makeText(getActivity().getApplicationContext(), "Login failed",Toast.LENGTH_SHORT).show();
-                            }
-                        });
+                if(!email.getText().toString().isEmpty() && !pass.getText().toString().isEmpty()) {
+                    FirebaseAuth.getInstance().signInWithEmailAndPassword(email.getText().toString(),
+                            pass.getText().toString())
+                            .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+                                @Override
+                                public void onSuccess(AuthResult authResult) {
+                                    UserModel.instance.getUserById(authResult.getUser().getUid())
+                                            .observe(getViewLifecycleOwner(), (user) -> {
+                                                toMainActivity(user);
+                                            });
+                                }
+                            })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Toast.makeText(getActivity().getApplicationContext(), e.getMessage(),Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                } else {
+                    Toast.makeText(getActivity().getApplicationContext(), "Please fill the fields",Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
