@@ -20,6 +20,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -75,6 +76,7 @@ public class RegisterFragment extends Fragment {
         });
 
         registerBtn = root.findViewById(R.id.register);
+        loginBtn = root.findViewById(R.id.backToLogin);
         email = root.findViewById(R.id.emailRegister);
         pass = root.findViewById(R.id.passRegister);
         username = root.findViewById(R.id.usernameRegister);
@@ -104,11 +106,18 @@ public class RegisterFragment extends Fragment {
                                 .addOnFailureListener(new OnFailureListener() {
                                     @Override
                                     public void onFailure(@NonNull Exception e) {
-                                        Toast.makeText(getActivity().getApplicationContext(), "Register failed", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(getActivity().getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
                                     }
                                 });
                     }
             };
+        });
+
+        loginBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Navigation.findNavController(view).navigate(R.id.action_navigation_register_to_navigation_login);
+            }
         });
 
         camBtn.setOnClickListener(v -> {
