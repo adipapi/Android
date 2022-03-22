@@ -29,8 +29,11 @@ import com.project.wegourmet.databinding.FragmentProfileBinding;
 import com.project.wegourmet.model.User;
 import com.squareup.picasso.Picasso;
 
+import java.io.IOException;
+
 public class ProfileFragment extends Fragment {
     private static final int REQUEST_CAMERA = 1;
+    private static final int REQUEST_CODE_LOAD_IMAGE = 0;
     private FragmentProfileBinding binding;
     private ProfileViewModel profileViewModel;
     ImageView profileImage;
@@ -88,6 +91,9 @@ public class ProfileFragment extends Fragment {
     }
 
     private void openGallery() {
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        intent.setType("image/*");
+        startActivityForResult(intent, REQUEST_CODE_LOAD_IMAGE);
     }
 
     private void openCam() {
@@ -98,13 +104,17 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_CAMERA){
-            if (resultCode == Activity.RESULT_OK){
-                Bundle extras = data.getExtras();
-                imageBitmap = (Bitmap) extras.get("data");
-                profileImage.setImageBitmap(imageBitmap);
-
+        if (requestCode == REQUEST_CODE_LOAD_IMAGE && resultCode == Activity.RESULT_OK && data != null) {
+            try {
+                imageBitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), data.getData());
+            } catch (IOException e) {
+                e.printStackTrace();
             }
+            profileImage.setImageBitmap(imageBitmap);
+        } else if (requestCode == REQUEST_CAMERA && resultCode == Activity.RESULT_OK && data != null) {
+            Bundle extras = data.getExtras();
+            imageBitmap = (Bitmap) extras.get("data");
+            profileImage.setImageBitmap(imageBitmap);
         }
     }
 

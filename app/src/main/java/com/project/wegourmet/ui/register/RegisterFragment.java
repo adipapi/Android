@@ -33,8 +33,11 @@ import com.project.wegourmet.Repository.model.UserModel;
 import com.project.wegourmet.databinding.FragmentRegisterBinding;
 import com.project.wegourmet.model.User;
 
+import java.io.IOException;
+
 public class RegisterFragment extends Fragment {
     private static final int REQUEST_CAMERA = 1;
+    private static final int REQUEST_CODE_LOAD_IMAGE = 0;
     private FragmentRegisterBinding binding;
     private boolean isHost;
     ImageView profileImage;
@@ -132,6 +135,9 @@ public class RegisterFragment extends Fragment {
     }
 
     private void openGallery() {
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        intent.setType("image/*");
+        startActivityForResult(intent, REQUEST_CODE_LOAD_IMAGE);
     }
 
     private void openCam() {
@@ -164,13 +170,17 @@ public class RegisterFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_CAMERA){
-            if (resultCode == Activity.RESULT_OK){
-                Bundle extras = data.getExtras();
-                imageBitmap = (Bitmap) extras.get("data");
-                profileImage.setImageBitmap(imageBitmap);
-
+        if (requestCode == REQUEST_CODE_LOAD_IMAGE && resultCode == Activity.RESULT_OK && data != null) {
+            try {
+                imageBitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), data.getData());
+            } catch (IOException e) {
+                e.printStackTrace();
             }
+            profileImage.setImageBitmap(imageBitmap);
+        } else if (requestCode == REQUEST_CAMERA && resultCode == Activity.RESULT_OK && data != null) {
+            Bundle extras = data.getExtras();
+            imageBitmap = (Bitmap) extras.get("data");
+            profileImage.setImageBitmap(imageBitmap);
         }
     }
 
