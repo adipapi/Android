@@ -19,7 +19,7 @@ import java.util.ArrayList;
 
 public class HomeFragment extends Fragment {
 
-private FragmentHomeBinding binding;
+    private FragmentHomeBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
             ViewGroup container, Bundle savedInstanceState) {
@@ -32,6 +32,7 @@ private FragmentHomeBinding binding;
         //final TextView textView = binding.textHome;
         //homeViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
 
+        //final RecyclerView recyclerView = binding.restaurantRecyclerView;
         final RecyclerView recyclerView = binding.restaurantRecyclerView;
         RestaurantListAdapter recyclerViewAdapter = new RestaurantListAdapter();
         recyclerView.setAdapter(recyclerViewAdapter);
