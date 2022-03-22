@@ -3,7 +3,7 @@
     <string name="title_home">Home</string>
     <string name="title_login">Login</string>
     <string name="title_register">Register</string>
-    <string name="title_dashboard">Dashboard</string>
+    <string name="title_history">History</string>
     <string name="title_my_restaurants">My restaurants</string>
     <string name="title_restaurant">Restaurant</string>
     <string name="title_profile">Profile</string>
