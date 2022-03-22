@@ -55,7 +55,7 @@ public class ProfileFragment extends Fragment {
             camBtn = root.findViewById(R.id.main_cam_btn);
             galleryBtn = root.findViewById(R.id.main_gallery_btn);
             saveBtn = root.findViewById(R.id.saveProfileBtn);
-            signOutBtn = root.findViewById(R.id.sign_out_btn);
+            signOutBtn = root.findViewById(R.id.profile_logout_btn);
 
             profileViewModel.getUserById(FirebaseAuth.getInstance().getCurrentUser().getUid());
             profileViewModel.user.observe(getViewLifecycleOwner(),(user) -> {

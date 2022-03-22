@@ -1,4 +1,4 @@
-package com.project.wegourmet.ui.dashboard;
+package com.project.wegourmet.ui.history;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -8,22 +8,22 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import com.project.wegourmet.databinding.FragmentDashboardBinding;
+import com.project.wegourmet.databinding.FragmentHistoryBinding;
 
-public class DashboardFragment extends Fragment {
+public class HistoryFragment extends Fragment {
 
-private FragmentDashboardBinding binding;
+private FragmentHistoryBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
             ViewGroup container, Bundle savedInstanceState) {
-        DashboardViewModel dashboardViewModel =
-                new ViewModelProvider(this).get(DashboardViewModel.class);
+        HistoryViewModel historyViewModel =
+                new ViewModelProvider(this).get(HistoryViewModel.class);
 
-    binding = FragmentDashboardBinding.inflate(inflater, container, false);
+    binding = FragmentHistoryBinding.inflate(inflater, container, false);
     View root = binding.getRoot();
 
-        final TextView textView = binding.textDashboard;
-        dashboardViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
+        final TextView textView = binding.textHistory;
+        historyViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
         return root;
     }
 

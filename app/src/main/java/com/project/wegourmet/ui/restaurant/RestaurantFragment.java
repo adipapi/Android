@@ -52,8 +52,8 @@ public class RestaurantFragment extends Fragment {
         binding = FragmentRestaurantBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-//        final TextView textView = binding.textDashboard;
-//        dashboardViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
+//        final TextView textView = binding.textHistory;
+//        historyViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
 
         saveButton = root.findViewById(R.id.save_restaurant_btn);
         name = root.findViewById(R.id.restaurant_name);
