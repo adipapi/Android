@@ -1,5 +1,6 @@
 package com.project.wegourmet;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.RadioButton;
@@ -11,6 +12,8 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.project.wegourmet.Repository.model.UserModel;
 import com.project.wegourmet.databinding.ActivityUnsignedBinding;
 
 public class UnsignedActivity extends AppCompatActivity {
@@ -23,6 +26,20 @@ public class UnsignedActivity extends AppCompatActivity {
 
         binding = ActivityUnsignedBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        if(FirebaseAuth.getInstance().getCurrentUser() != null) {
+            UserModel.instance.getUserById(FirebaseAuth.getInstance().getCurrentUser().getUid()).observe(this, (user) -> {
+                Intent intent;
+
+                if(user.isHost()) {
+                    intent = new Intent(getApplicationContext(), HostActivity.class);
+                } else {
+                    intent = new Intent(getApplicationContext(), GuestActivity.class);
+                }
+
+                startActivity(intent);
+            });
+        }
 
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
