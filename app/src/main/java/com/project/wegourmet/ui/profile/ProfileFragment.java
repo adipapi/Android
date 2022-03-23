@@ -117,27 +117,27 @@ public class ProfileFragment extends Fragment {
     }
 
     private void save() {
-//        progressBar.setVisibility(View.VISIBLE);
-//        saveBtn.setEnabled(false);
-//        cancelBtn.setEnabled(false);
-//        camBtn.setEnabled(false);
-//        galleryBtn.setEnabled(false);
-
         String name = username.getText().toString();
 
         User curUser = profileViewModel.user.getValue();
+
         curUser.setUsername(name);
-        if (imageBitmap == null) {
-            profileViewModel.setUser(curUser, () -> {
-                Toast.makeText(getActivity().getApplicationContext(), "Saved data successfully!",Toast.LENGTH_SHORT).show();
-            });
-        } else {
-            UserModel.instance.saveImage(imageBitmap, curUser.getId() + ".jpg", url -> {
-                curUser.setProfileImageUrl(url);
+
+        if(!name.isEmpty()) {
+            if (imageBitmap == null) {
                 profileViewModel.setUser(curUser, () -> {
                     Toast.makeText(getActivity().getApplicationContext(), "Saved data successfully!",Toast.LENGTH_SHORT).show();
                 });
-            });
+            } else {
+                UserModel.instance.saveImage(imageBitmap, curUser.getId() + ".jpg", url -> {
+                    curUser.setProfileImageUrl(url);
+                    profileViewModel.setUser(curUser, () -> {
+                        Toast.makeText(getActivity().getApplicationContext(), "Saved data successfully!",Toast.LENGTH_SHORT).show();
+                    });
+                });
+            }
+        } else {
+            Toast.makeText(getActivity().getApplicationContext(), "Please enter a name!",Toast.LENGTH_SHORT).show();
         }
     }
 

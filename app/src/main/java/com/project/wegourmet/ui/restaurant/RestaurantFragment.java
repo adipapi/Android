@@ -177,16 +177,23 @@ public class RestaurantFragment extends Fragment {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Restaurant restaurant = new Restaurant(FirebaseAuth.getInstance().getCurrentUser().getUid(),
-                        name.getText().toString(), address.getText().toString(), phone.getText().toString(),
-                        restaurantTypeSpinner.getSelectedItem().toString(), description.getText().toString(),
-                        Double.parseDouble(coordinateX.getText().toString()),
-                        Double.parseDouble(coordinateY.getText().toString()), false);
-                if(restaurantMode == "EDIT") {
-                    restaurant.setId(restaurantViewModel.restaurant.getValue().getId());
-                    saveRestaurant(restaurant);
-                } else if(restaurantMode == "ADD") {
-                    addRestaurant(restaurant);
+                if(!(name.getText().toString().isEmpty() || address.getText().toString().isEmpty() ||
+                phone.getText().toString().isEmpty() || description.getText().toString().isEmpty() ||
+                        coordinateX.getText().toString().isEmpty() || coordinateY.getText().toString().isEmpty()))
+                {
+                    Restaurant restaurant = new Restaurant(FirebaseAuth.getInstance().getCurrentUser().getUid(),
+                            name.getText().toString(), address.getText().toString(), phone.getText().toString(),
+                            restaurantTypeSpinner.getSelectedItem().toString(), description.getText().toString(),
+                            Double.parseDouble(coordinateX.getText().toString()),
+                            Double.parseDouble(coordinateY.getText().toString()), false);
+                    if (restaurantMode == "EDIT") {
+                        restaurant.setId(restaurantViewModel.restaurant.getValue().getId());
+                        saveRestaurant(restaurant);
+                    } else if (restaurantMode == "ADD") {
+                        addRestaurant(restaurant);
+                    }
+                } else {
+                    Toast.makeText(getActivity().getApplicationContext(), "Please fill all details",Toast.LENGTH_SHORT).show();
                 }
             }
         });
