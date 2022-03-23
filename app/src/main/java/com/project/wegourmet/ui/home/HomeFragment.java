@@ -18,9 +18,11 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.project.wegourmet.MapActivity;
 import com.project.wegourmet.R;
+import com.project.wegourmet.Repository.model.RestaurantModel;
 import com.project.wegourmet.databinding.FragmentHomeBinding;
 import com.project.wegourmet.model.Restaurant;
 
@@ -36,6 +38,7 @@ private FragmentHomeBinding binding;
     RecyclerView restaurantsRv;
     ImageButton mapViewBtn;
     SearchView searchBar;
+    SwipeRefreshLayout swipeRefresh;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
             ViewGroup container, Bundle savedInstanceState) {
@@ -53,6 +56,8 @@ private FragmentHomeBinding binding;
         adapter = new RestaurantAdapter(restaurants);
         restaurantsRv.setAdapter(adapter);
 
+        swipeRefresh = root.findViewById(R.id.restaurants_swiperefresh);
+        swipeRefresh.setOnRefreshListener(() -> homeViewModel.getRestaurants());
 
         searchBar = root.findViewById(R.id.search_bar);
 
@@ -87,6 +92,16 @@ private FragmentHomeBinding binding;
             adapter.originalRestaurants = rests;
             adapter.restaurantTypeSpinner = dropdown;
             adapter.notifyDataSetChanged();
+        });
+
+        swipeRefresh.setRefreshing(RestaurantModel.instance.getRestaurantListLoadingState().getValue() == RestaurantModel.RestaurantListLoadingState.loading);
+        RestaurantModel.instance.getRestaurantListLoadingState().observe(getViewLifecycleOwner(), restaurantListLoadingState -> {
+            if (restaurantListLoadingState == RestaurantModel.RestaurantListLoadingState.loading){
+                swipeRefresh.setRefreshing(true);
+            }else{
+                swipeRefresh.setRefreshing(false);
+            }
+
         });
 
         mapViewBtn = root.findViewById(R.id.view_in_map);

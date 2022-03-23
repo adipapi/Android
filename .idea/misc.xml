@@ -10,7 +10,7 @@
         <entry key="..\:/Eden/Wegourmet/Android/app/src/main/res/layout/activity_unsigned.xml" value="0.1859375" />
         <entry key="..\:/Eden/Wegourmet/Android/app/src/main/res/layout/fragment_create_edit_restaurant.xml" value="0.1859375" />
         <entry key="..\:/Eden/Wegourmet/Android/app/src/main/res/layout/fragment_dashboard.xml" value="0.1859375" />
-        <entry key="..\:/Eden/Wegourmet/Android/app/src/main/res/layout/fragment_favorites.xml" value="0.21197916666666666" />
+        <entry key="..\:/Eden/Wegourmet/Android/app/src/main/res/layout/fragment_favorites.xml" value="0.25" />
         <entry key="..\:/Eden/Wegourmet/Android/app/src/main/res/layout/fragment_history.xml" value="0.151268115942029" />
         <entry key="..\:/Eden/Wegourmet/Android/app/src/main/res/layout/fragment_home.xml" value="0.21197916666666666" />
         <entry key="..\:/Eden/Wegourmet/Android/app/src/main/res/layout/fragment_login.xml" value="0.22" />
@@ -48,5 +48,12 @@
   </component>
   <component name="ProjectType">
     <option name="id" value="Android" />
+  </component>
+  <component name="VisualizationToolProject">
+    <option name="state">
+      <ProjectState>
+        <option name="scale" value="0.21197916666666666" />
+      </ProjectState>
+    </option>
   </component>
 </project>
