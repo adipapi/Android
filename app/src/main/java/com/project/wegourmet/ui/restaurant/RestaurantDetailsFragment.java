@@ -25,7 +25,7 @@ public class RestaurantDetailsFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_restaurant_details, container, false);
 
-        String rsId = RestaurantDetailsFragmentArgs.fromBundle(getArguments()).getStudentId();
+        String rsId = RestaurantDetailsFragmentArgs.fromBundle(getArguments()).getRestaurantName();
 
         RestaurantModel.instance.getRestaurantById(rsId, new RestaurantModel.GetRestaurantById() {
             @Override

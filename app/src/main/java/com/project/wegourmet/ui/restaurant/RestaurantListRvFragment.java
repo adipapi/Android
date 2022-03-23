@@ -24,6 +24,7 @@ import android.widget.TextView;
 import com.project.wegourmet.R;
 import com.project.wegourmet.Repository.model.RestaurantModel;
 import com.project.wegourmet.model.Restaurant;
+import com.project.wegourmet.ui.home.HomeFragmentDirections;
 import com.squareup.picasso.Picasso;
 
 public class RestaurantListRvFragment {
@@ -48,7 +49,7 @@ public class RestaurantListRvFragment {
         RecyclerView list = view.findViewById(R.id.restaurantlist_rv);
         list.setHasFixedSize(true);
 
-        list.setLayoutManager(new LinearLayoutManager(getContext()));
+//        list.setLayoutManager(new LinearLayoutManager(getContext()));
 
         adapter = new MyAdapter();
         list.setAdapter(adapter);
@@ -56,28 +57,28 @@ public class RestaurantListRvFragment {
         adapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(View v,int position) {
-                String stId = viewModel.getData().getValue().get(position).getId();
-                Navigation.findNavController(v).navigate(RestaurantListRvFragmentDirections.actionRestaurantListRvFragmentToRestaurantDetailsFragment(stId));
+                String rsId = viewModel.getData().getValue().get(position).getId();
+                Navigation.findNavController(v).navigate(HomeFragmentDirections.actionNavigationHomeToNavigationRestaurantDetails(rsId));
 
             }
         });
 
-        setHasOptionsMenu(true);
-        viewModel.getData().observe(getViewLifecycleOwner(), list1 -> refresh());
-        swipeRefresh.setRefreshing(RestaurantModel.instance.getRestaurantListLoadingState().getValue() == RestaurantModel.RestaurantListLoadingState.loading);
-        RestaurantModel.instance.getRestaurantListLoadingState().observe(getViewLifecycleOwner(), restaurantListLoadingState -> {
-            if (studentListLoadingState == RestaurantModel.RestaurantListLoadingState.loading){
-                swipeRefresh.setRefreshing(true);
-            }else{
-                swipeRefresh.setRefreshing(false);
-            }
-
-        });
+//        setHasOptionsMenu(true);
+//        viewModel.getData().observe(getViewLifecycleOwner(), list1 -> refresh());
+//        swipeRefresh.setRefreshing(RestaurantModel.instance.getRestaurantListLoadingState().getValue() == RestaurantModel.RestaurantListLoadingState.loading);
+//        RestaurantModel.instance.getRestaurantListLoadingState().observe(getViewLifecycleOwner(), restaurantListLoadingState -> {
+//            if (studentListLoadingState == RestaurantModel.RestaurantListLoadingState.loading){
+//                swipeRefresh.setRefreshing(true);
+//            }else{
+//                swipeRefresh.setRefreshing(false);
+//            }
+//
+//        });
         return view;
     }
 
-    private Context getContext() {
-    }
+//    private Context getContext() {
+//    }
 
     private void refresh() {
         adapter.notifyDataSetChanged();
@@ -127,7 +128,7 @@ public class RestaurantListRvFragment {
         @NonNull
         @Override
         public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View view = getLayoutInflater().inflate(R.layout.list_item,parent,false);
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item,parent,false);
             MyViewHolder holder = new MyViewHolder(view,listener);
             return holder;
         }
@@ -147,19 +148,19 @@ public class RestaurantListRvFragment {
         }
     }
 
-    @Override
-    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.restaurant_list_menu,menu);
-    }
+//    @Override
+//    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+//        super.(menu, inflater);
+//        inflater.inflate(R.menu.restaurant_list_menu,menu);
+//    }
 
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.addRestaurantFragment){
-            Log.d("TAG","ADD...");
-            return true;
-        }else {
-            return super.onOptionsItemSelected(item);
-        }
-    }
+//    @Override
+//    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+//        if (item.getItemId() == R.id.addRestaurantFragment){
+//            Log.d("TAG","ADD...");
+//            return true;
+//        }else {
+//            return super.onOptionsItemSelected(item);
+//        }
+//    }
 }
