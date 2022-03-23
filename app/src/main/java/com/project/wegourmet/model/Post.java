@@ -16,14 +16,15 @@ public class Post {
     String restaurantName;
     String imageUrl;
     String text;
+    Boolean isDeleted;
     Long updateDate;
 
     public Post(){}
 
-    public Post(String id, String restaurantName, String text) {
-        this.id = id;
+    public Post(String restaurantName, String text, Boolean isDeleted) {
         this.restaurantName = restaurantName;
         this.text = text;
+        this.isDeleted = isDeleted;
     }
 
     @NonNull
@@ -67,15 +68,25 @@ public class Post {
         this.updateDate = updateDate;
     }
 
+    public Boolean getDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        isDeleted = deleted;
+    }
+
     public static Post create(Map<String, Object> json) {
         String id = (String) json.get("id");
         String restaurantName = (String) json.get("restaurantName");
         String imageUrl = (String) json.get("imageUrl");
+        Boolean isDeleted = (Boolean) json.get("deleted");
         String text = (String) json.get("text");
 //        Timestamp ts = (Timestamp)json.get("updateDate");
 //        Long updateDate = ts.getSeconds();
 
-        Post post = new Post(id, restaurantName, text);
+        Post post = new Post(restaurantName, text, isDeleted);
+        post.setId(id);
 //        post.setUpdateDate(updateDate);
         post.setImageUrl(imageUrl);
         return post;

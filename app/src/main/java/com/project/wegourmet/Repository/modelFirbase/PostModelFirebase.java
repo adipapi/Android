@@ -6,6 +6,7 @@ import android.net.Uri;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.storage.FirebaseStorage;
@@ -28,8 +29,9 @@ public class PostModelFirebase {
 
     // Methods
     public void addPost(Post post, OnSuccessListener successListener, OnFailureListener failureListener) {
-        String id = post.getId();
-        db.collection(COLLECTION_NAME).document(id).set(post)
+        DocumentReference ref = db.collection(COLLECTION_NAME).document();
+        post.setId(ref.getId());
+        ref.set(post)
                 .addOnSuccessListener(successListener)
                 .addOnFailureListener(failureListener);
     }
@@ -46,6 +48,7 @@ public class PostModelFirebase {
     public void getPostByRestaurant(String restaurantName,OnSuccessListener successListener) {
         db.collection(COLLECTION_NAME)
                 .whereEqualTo("restaurantName", restaurantName)
+                .whereEqualTo("deleted", false)
                 .get()
                 .addOnSuccessListener((querySnapshot) -> {
                     List<Post> list = new LinkedList<Post>();

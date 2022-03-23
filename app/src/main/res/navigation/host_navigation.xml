@@ -3,13 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/navigation_home">
-
-    <fragment
-        android:id="@+id/navigation_home"
-        android:name="com.project.wegourmet.ui.home.HomeFragment"
-        android:label="@string/title_home"
-        tools:layout="@layout/fragment_home" />
+    app:startDestination="@+id/navigation_my_restaurants">
 
     <fragment
         android:id="@+id/navigation_my_restaurants"
@@ -29,11 +23,17 @@
         <action
             android:id="@+id/action_navigation_restaurant_to_navigation_post"
             app:destination="@id/navigation_post" />
+        <argument
+            android:name="restaurantMode"
+            app:argType="string" />
+        <argument
+            android:name="restaurantName"
+            app:argType="string" />
     </fragment>
 
     <fragment
         android:id="@+id/navigation_post"
-        android:name="com.project.wegourmet.ui.restaurant.FragmentPost"
+        android:name="com.project.wegourmet.ui.restaurant.PostFragment"
         android:label="@string/title_restaurant"
         tools:layout="@layout/fragment_post">
         <argument
@@ -41,6 +41,9 @@
         app:argType="string" />
         <argument
             android:name="postMode"
+            app:argType="string" />
+        <argument
+            android:name="restaurantName"
             app:argType="string" />
     </fragment>
 

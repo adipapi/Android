@@ -32,8 +32,10 @@ import com.project.wegourmet.ui.history.HistoryViewModel;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
+import java.math.BigInteger;
+import java.util.Random;
 
-public class FragmentPost extends Fragment {
+public class PostFragment extends Fragment {
     private static final int REQUEST_CAMERA = 1;
     private static final int REQUEST_CODE_LOAD_IMAGE = 0;
     ImageView postImage;
@@ -59,9 +61,9 @@ public class FragmentPost extends Fragment {
         postImage = root.findViewById(R.id.post_image);
         postText = root.findViewById(R.id.post_text);
 
-        String postId = FragmentPostArgs.fromBundle(getArguments()).getPostId();
+        String postId = PostFragmentArgs.fromBundle(getArguments()).getPostId();
 
-        if(postId != null) {
+        if(postId != null && !postId.isEmpty()) {
             postViewModel.getPostById(postId);
             postViewModel.post.observe(getViewLifecycleOwner(), (postById) -> {
                 Picasso.get().load(postById.getImageUrl()).into(postImage);
@@ -87,25 +89,20 @@ public class FragmentPost extends Fragment {
     }
 
     private void save() {
-        String postMode = FragmentPostArgs.fromBundle(getArguments()).getPostMode();
-//        progressBar.setVisibility(View.VISIBLE);
-//        saveBtn.setEnabled(false);
-//        cancelBtn.setEnabled(false);
-//        camBtn.setEnabled(false);
-//        galleryBtn.setEnabled(false);
+        String postMode = PostFragmentArgs.fromBundle(getArguments()).getPostMode();
 
         String text = postText.getText().toString();
         Post curPost = postViewModel.post.getValue();
-        curPost.setText(text);
         if(postMode == "VIEW") {
             return;
         } else if(postMode == "EDIT") {
+            curPost.setText(text);
             if (imageBitmap == null) {
                 postViewModel.setPost(curPost, () -> {
                     Toast.makeText(getActivity().getApplicationContext(), "Saved data successfully!",Toast.LENGTH_SHORT).show();
                 });
             } else {
-                UserModel.instance.saveImage(imageBitmap, curPost.getId() + ".jpg", url -> {
+                PostModel.instance.saveImage(imageBitmap, curPost.getId() + ".jpg", url -> {
                     curPost.setImageUrl(url);
                     postViewModel.setPost(curPost, () -> {
                         Toast.makeText(getActivity().getApplicationContext(), "Saved data successfully!",Toast.LENGTH_SHORT).show();
@@ -113,18 +110,24 @@ public class FragmentPost extends Fragment {
                 });
             }
         } else {
-//            if (imageBitmap == null) {
-//                postViewModel.setPost(curPost, () -> {
-//                    Toast.makeText(getActivity().getApplicationContext(), "Saved data successfully!",Toast.LENGTH_SHORT).show();
-//                });
-//            } else {
-//                UserModel.instance.saveImage(imageBitmap, curPost.getId() + ".jpg", url -> {
-//                    curPost.setImageUrl(url);
-//                    postViewModel.setPost(curPost, () -> {
-//                        Toast.makeText(getActivity().getApplicationContext(), "Saved data successfully!",Toast.LENGTH_SHORT).show();
-//                    });
-//                });
-//            }
+            String restaurantName = PostFragmentArgs.fromBundle(getArguments()).getRestaurantName();
+            Post newPost = new Post(restaurantName, text, false);
+            if (imageBitmap == null) {
+                PostModel.instance.addPost(newPost, (e) -> {
+                    Toast.makeText(getActivity().getApplicationContext(), "Saved data successfully!",Toast.LENGTH_SHORT).show();
+                }, (e) -> {
+                    Toast.makeText(getActivity().getApplicationContext(), "Save fail!",Toast.LENGTH_SHORT).show();
+                });
+            } else {
+                PostModel.instance.saveImage(imageBitmap, new BigInteger(256, new Random()) + ".jpg", url -> {
+                    newPost.setImageUrl(url);
+                    PostModel.instance.addPost(newPost, (e) -> {
+                        Toast.makeText(getActivity().getApplicationContext(), "Saved data successfully!",Toast.LENGTH_SHORT).show();
+                    }, (e) -> {
+                        Toast.makeText(getActivity().getApplicationContext(), "Save fail!",Toast.LENGTH_SHORT).show();
+                    });
+                });
+            }
         }
 
 //        Navigation.findNavController(getView()).navigateUp();

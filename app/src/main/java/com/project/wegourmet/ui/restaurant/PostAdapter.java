@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
@@ -18,10 +19,14 @@ import java.util.List;
 public class PostAdapter extends RecyclerView.Adapter<ViewHolder>{
 
     public List<Post> posts;
+    OnItemClickListener editListener;
+    OnItemClickListener deleteListener;
 
-    OnItemClickListener listener;
-    public void setOnItemClickListener(OnItemClickListener listener){
-        this.listener = listener;
+    public void setOnEditClickListener(OnItemClickListener listener){
+        this.editListener = listener;
+    }
+    public void setOnDeleteClickListener(OnItemClickListener listener){
+        this.deleteListener = listener;
     }
 
     // data is passed into the constructor
@@ -33,7 +38,7 @@ public class PostAdapter extends RecyclerView.Adapter<ViewHolder>{
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.post_in_grid,parent,false);
-        ViewHolder holder = new ViewHolder(view,listener);
+        ViewHolder holder = new ViewHolder(view,editListener, deleteListener);
         return holder;
     }
 
@@ -59,16 +64,28 @@ interface OnItemClickListener{
 // stores and recycles views as they are scrolled off screen
 class ViewHolder extends RecyclerView.ViewHolder{
     ImageView postImage;
+    ImageButton editBtn;
+    ImageButton deleteBtn;
 
-    ViewHolder(View itemView, OnItemClickListener listener) {
+    ViewHolder(View itemView, OnItemClickListener editListener, OnItemClickListener deleteListener) {
         super(itemView);
         postImage = itemView.findViewById(R.id.post_in_list);
+        editBtn = itemView.findViewById(R.id.edit_post_btn);
+        deleteBtn = itemView.findViewById(R.id.delete_post_btn);
 
-        itemView.setOnClickListener(new View.OnClickListener() {
+        editBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View view) {
                 int pos = getAdapterPosition();
-                listener.onItemClick(v,pos);
+                editListener.onItemClick(view,pos);
+            }
+        });
+
+        deleteBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int pos = getAdapterPosition();
+                deleteListener.onItemClick(view, pos);
             }
         });
     }

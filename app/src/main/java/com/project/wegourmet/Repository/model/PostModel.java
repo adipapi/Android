@@ -28,7 +28,8 @@ public class PostModel {
     MutableLiveData<List<Post>> posts = new MutableLiveData<List<Post>>();
 
 
-    public MutableLiveData<List<Post>> getPostsByRestaurant(String restaurantName) {
+    public MutableLiveData<List<Post>>
+    getPostsByRestaurant(String restaurantName) {
             executor.execute(() -> {
                 List<Post> postsByRestaurant = AppLocalDb.db.postDao().getPostsByRestaurant(restaurantName);
 
@@ -51,6 +52,18 @@ public class PostModel {
         modelFirebase.addPost(post, successListener, failureListener);
     }
 
+    public void delete(Post deletedPost, Runnable success) {
+        deletedPost.setDeleted(true);
+        modelFirebase.setPost(deletedPost, (e) -> {
+            executor.execute(() -> {
+                AppLocalDb.db.postDao().delete(deletedPost);
+                post.postValue(deletedPost);
+                mainThread.post(() -> {
+                    success.run();
+                });
+            });
+        });
+    }
 
     public void setPost(Post editedPost, Runnable success) {
         modelFirebase.setPost(editedPost, (e) -> {
@@ -60,7 +73,6 @@ public class PostModel {
                 mainThread.post(() -> {
                     success.run();
                 });
-
             });
         });
     }

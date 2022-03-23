@@ -1,6 +1,7 @@
 package com.project.wegourmet.Repository.dao;
 
 import androidx.room.Dao;
+import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
@@ -27,4 +28,7 @@ public interface PostDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertMany(List<Post> posts);
+
+    @Delete
+    void delete(Post post);
 }
