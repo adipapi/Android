@@ -72,11 +72,11 @@ public class Post {
         String restaurantName = (String) json.get("restaurantName");
         String imageUrl = (String) json.get("imageUrl");
         String text = (String) json.get("text");
-        Timestamp ts = (Timestamp)json.get("updateDate");
-        Long updateDate = ts.getSeconds();
+//        Timestamp ts = (Timestamp)json.get("updateDate");
+//        Long updateDate = ts.getSeconds();
 
         Post post = new Post(id, restaurantName, text);
-        post.setUpdateDate(updateDate);
+//        post.setUpdateDate(updateDate);
         post.setImageUrl(imageUrl);
         return post;
     }

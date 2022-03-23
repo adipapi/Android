@@ -13,12 +13,18 @@ import java.util.List;
 @Dao
 public interface PostDao {
 
-    @Query("SELECT * FROM users")
+    @Query("SELECT * FROM posts")
     List<Post> getAll();
 
+    @Query("SELECT * FROM posts where id = :id")
+    Post getById(String id);
+
     @Query("SELECT * FROM posts where restaurantName = :restaurantName")
-    Post getPostsByRestaurant(String restaurantName);
+    List<Post> getPostsByRestaurant(String restaurantName);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(Post post);
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    void insertMany(List<Post> posts);
 }

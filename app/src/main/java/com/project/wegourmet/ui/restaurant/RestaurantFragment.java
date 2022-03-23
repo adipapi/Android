@@ -1,6 +1,7 @@
 package com.project.wegourmet.ui.restaurant;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -18,16 +19,24 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.project.wegourmet.R;
+import com.project.wegourmet.Repository.model.PostModel;
 import com.project.wegourmet.Repository.model.RestaurantModel;
 import com.project.wegourmet.Repository.model.UserModel;
 import com.project.wegourmet.databinding.FragmentRestaurantBinding;
+import com.project.wegourmet.model.Post;
 import com.project.wegourmet.model.Restaurant;
+
+import java.util.List;
 
 public class RestaurantFragment extends Fragment {
     private static final int REQUEST_CAMERA = 1;
@@ -43,6 +52,9 @@ public class RestaurantFragment extends Fragment {
     EditText restaurantType;
     ImageButton camBtn;
     ImageButton galleryBtn;
+    RecyclerView postsRv;
+    PostAdapter adapter;
+    List<Post> posts;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -62,7 +74,34 @@ public class RestaurantFragment extends Fragment {
         restaurantType = root.findViewById(R.id.restaurant_type);
         restaurantImage = root.findViewById(R.id.restaurant_image);
         camBtn = root.findViewById(R.id.restaurant_cam_btn);
-//        galleryBtn = root.findViewById(R.id.register_gallery_btn);
+
+        postsRv = root.findViewById(R.id.restaurant_posts_rv);
+        postsRv.setHasFixedSize(true);
+
+        postsRv.setLayoutManager(new GridLayoutManager(getContext(), 3));
+
+        adapter = new PostAdapter(posts);
+        postsRv.setAdapter(adapter);
+
+        adapter.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(View v,int position) {
+                String postId = posts.get(position).getId();
+//                Navigation.findNavController(getActivity().getV).navigate(R.id.action_navigation_my_restaurants_to_navigation_restaurant);
+                if (Navigation.findNavController(getView()).getCurrentDestination().getId() == R.id.navigation_restaurant) {
+                    Navigation.findNavController(getView()).navigate(RestaurantFragmentDirections.actionNavigationRestaurantToNavigationPost(postId, "EDIT"));
+                }
+//                getView().fin.navigate(R.id.action_searchFragment_to_artistFragment)
+            }
+        });
+
+        // TODO : ask if there is a input of restaurant name, if so than select posts, if not
+        // We are in new restaurant mode, we dont have any posts.
+        PostModel.instance.getPostsByRestaurant("BBB").observe(getViewLifecycleOwner(), (postsByRestaurants) -> {
+            posts = postsByRestaurants;
+            adapter.posts = postsByRestaurants;
+            adapter.notifyDataSetChanged();
+        });
 
         camBtn.setOnClickListener(v -> {
             openCam();

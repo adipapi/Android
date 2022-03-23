@@ -9,6 +9,8 @@ import com.project.wegourmet.Repository.model.RestaurantModel;
 import com.project.wegourmet.model.Restaurant;
 import com.project.wegourmet.model.User;
 
+import java.util.List;
+
 public class RestaurantViewModel extends ViewModel {
     public MutableLiveData<Restaurant> restaurant = new MutableLiveData<>();
 
@@ -17,6 +19,10 @@ public class RestaurantViewModel extends ViewModel {
     public void addRestaurant(Restaurant restaurant, OnFailureListener failureListener) {
         RestaurantModel.instance.addRestaurant(restaurant, failureListener);
     }
+
+//    public void addRestaurant(Restaurant restaurant, OnFailureListener failureListener) {
+//        RestaurantModel.instance.addRestaurant(restaurant, failureListener);
+//    }
 
 
 

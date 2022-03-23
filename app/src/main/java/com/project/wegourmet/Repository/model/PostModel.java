@@ -10,10 +10,10 @@ import androidx.lifecycle.MutableLiveData;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.project.wegourmet.Repository.modelFirbase.PostModelFirebase;
-import com.project.wegourmet.Repository.modelFirbase.UserModelFirebase;
 import com.project.wegourmet.model.Post;
 import com.project.wegourmet.model.User;
 
+import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
@@ -25,29 +25,32 @@ public class PostModel {
 
     // Methods
     MutableLiveData<Post> post = new MutableLiveData<Post>();
+    MutableLiveData<List<Post>> posts = new MutableLiveData<List<Post>>();
 
-    public MutableLiveData<Post> getPostsByRestaurant(String restaurantName) {
+
+    public MutableLiveData<List<Post>> getPostsByRestaurant(String restaurantName) {
             executor.execute(() -> {
-                Post postsByRestaurant = AppLocalDb.db.postDao().getPostsByRestaurant(restaurantName);
+                List<Post> postsByRestaurant = AppLocalDb.db.postDao().getPostsByRestaurant(restaurantName);
 
                 if(postsByRestaurant != null) {
-                    post.postValue(postsByRestaurant);
+                    posts.postValue(postsByRestaurant);
                 }
             });
 
             modelFirebase.getPostByRestaurant(restaurantName, (fbPostsByRestaurant) -> {
                 executor.execute(() -> {
-                    AppLocalDb.db.userDao().insert((User) fbPostsByRestaurant);
-                    post.postValue((Post) fbPostsByRestaurant);
+                    AppLocalDb.db.postDao().insertMany((List<Post>) fbPostsByRestaurant);
+                    posts.postValue((List<Post>) fbPostsByRestaurant);
                 });
             });
 
-            return post;
+            return posts;
     }
 
     public void addPost(Post post, OnSuccessListener successListener, OnFailureListener failureListener) {
         modelFirebase.addPost(post, successListener, failureListener);
     }
+
 
     public void setPost(Post editedPost, Runnable success) {
         modelFirebase.setPost(editedPost, (e) -> {
@@ -60,6 +63,26 @@ public class PostModel {
 
             });
         });
+    }
+
+
+    public MutableLiveData<Post> getPostById(String id) {
+        executor.execute(() -> {
+            Post postById = AppLocalDb.db.postDao().getById(id);
+
+            if(postById != null) {
+                post.postValue(postById);
+            }
+        });
+
+        modelFirebase.getPostByID(id, (fbPost) -> {
+            executor.execute(() -> {
+                AppLocalDb.db.postDao().insert((Post) fbPost);
+                post.postValue((Post) fbPost);
+            });
+        });
+
+        return post;
     }
 
     public interface SaveImageListener {

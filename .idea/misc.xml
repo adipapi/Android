@@ -3,6 +3,24 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Eden/Wegourmet/Android/app/src/main/res/layout/activity_guest.xml" value="0.17391304347826086" />
+        <entry key="..\:/Eden/Wegourmet/Android/app/src/main/res/layout/activity_host.xml" value="0.27760416666666665" />
+        <entry key="..\:/Eden/Wegourmet/Android/app/src/main/res/layout/activity_main.xml" value="0.1859375" />
+        <entry key="..\:/Eden/Wegourmet/Android/app/src/main/res/layout/activity_maps.xml" value="0.25052083333333336" />
+        <entry key="..\:/Eden/Wegourmet/Android/app/src/main/res/layout/activity_unsigned.xml" value="0.1859375" />
+        <entry key="..\:/Eden/Wegourmet/Android/app/src/main/res/layout/fragment_dashboard.xml" value="0.1859375" />
+        <entry key="..\:/Eden/Wegourmet/Android/app/src/main/res/layout/fragment_favorites.xml" value="0.21197916666666666" />
+        <entry key="..\:/Eden/Wegourmet/Android/app/src/main/res/layout/fragment_home.xml" value="0.21197916666666666" />
+        <entry key="..\:/Eden/Wegourmet/Android/app/src/main/res/layout/fragment_login.xml" value="0.22" />
+        <entry key="..\:/Eden/Wegourmet/Android/app/src/main/res/layout/fragment_my_restaurants.xml" value="0.26458333333333334" />
+        <entry key="..\:/Eden/Wegourmet/Android/app/src/main/res/layout/fragment_post.xml" value="0.1762917933130699" />
+        <entry key="..\:/Eden/Wegourmet/Android/app/src/main/res/layout/fragment_posts_list.xml" value="0.21197916666666666" />
+        <entry key="..\:/Eden/Wegourmet/Android/app/src/main/res/layout/fragment_profile.xml" value="0.25" />
+        <entry key="..\:/Eden/Wegourmet/Android/app/src/main/res/layout/fragment_register.xml" value="0.2" />
+        <entry key="..\:/Eden/Wegourmet/Android/app/src/main/res/layout/fragment_restaurant.xml" value="0.1762917933130699" />
+        <entry key="..\:/Eden/Wegourmet/Android/app/src/main/res/layout/post_in_grid.xml" value="0.21197916666666666" />
+        <entry key="..\:/Eden/Wegourmet/Android/app/src/main/res/menu/bottom_nav_menu.xml" value="0.1859375" />
+        <entry key="..\:/Eden/Wegourmet/Android/app/src/main/res/menu/host_bottom_nav_menu.xml" value="0.27760416666666665" />
         <entry key="..\:/Users/Bar/Documents/Projects/WeGourmet/app/src/main/res/drawable/ic_dashboard_black_24dp.xml" value="0.33" />
         <entry key="..\:/Users/Bar/Documents/Projects/WeGourmet/app/src/main/res/drawable/ic_notifications_black_24dp.xml" value="0.33" />
         <entry key="..\:/Users/Bar/Documents/Projects/WeGourmet/app/src/main/res/drawable/non_stretching_bg_img.xml" value="0.3285" />
@@ -16,6 +34,7 @@
       </map>
     </option>
   </component>
+  <component name="ExternalStorageConfigurationManager" enabled="true" />
   <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>

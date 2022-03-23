@@ -62,6 +62,20 @@ public class PostModelFirebase {
     };
 
 
+    public void getPostByID(String id,OnSuccessListener successListener) {
+        db.collection(COLLECTION_NAME)
+                .whereEqualTo("id", id)
+                .limit(1)
+                .get()
+                .addOnSuccessListener((querySnapshot) -> {
+                    Post post = querySnapshot.getDocuments().get(0).toObject(Post.class);
+
+                    if (post != null) {
+                        successListener.onSuccess(post);
+                    }
+                });
+    };
+
     public void saveImage(Bitmap imageBitmap, String imageName, PostModel.SaveImageListener listener) {
         StorageReference storageRef = storage.getReference();
         StorageReference imgRef = storageRef.child("posts_images/" + imageName);
