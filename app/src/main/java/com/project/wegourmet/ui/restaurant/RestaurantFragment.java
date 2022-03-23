@@ -256,9 +256,7 @@ public class RestaurantFragment extends Fragment {
     private void initspinnerfooter(Spinner dropdown) {
         ArrayList<String> items = new  ArrayList<>();
         for(RestaurantTypeEnum type : RestaurantTypeEnum.values()) {
-            if(type != RestaurantTypeEnum.All) {
-                items.add(type.toString());
-            }
+            items.add(type.toString());
         }
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, items);

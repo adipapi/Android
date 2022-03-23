@@ -86,7 +86,7 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantViewHolder
 
         for (Restaurant item : originalRestaurants) {
             if (item.getName().toLowerCase().contains(constraint)) {
-                if(restaurantTypeSpinner.getSelectedItem().toString().equals(RestaurantTypeEnum.All.toString())  ||  restaurantTypeSpinner.getSelectedItem().toString().equals(item.getType())) {
+                if(restaurantTypeSpinner.getSelectedItem().toString().equals("All")  ||  restaurantTypeSpinner.getSelectedItem().toString().equals(item.getType())) {
                     results.add(item);
                 }
             }

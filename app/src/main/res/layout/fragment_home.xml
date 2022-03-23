@@ -22,10 +22,10 @@
         android:queryHint="Search restaurant by name"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guideline5"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/guideline3"
         app:layout_constraintTop_toTopOf="@+id/guideline2"
-        app:layout_constraintVertical_bias="0.026"
+        app:layout_constraintVertical_bias="0.013"
         app:theme="@style/SearchViewStyle" />
 
     <androidx.constraintlayout.widget.Guideline
@@ -46,12 +46,12 @@
         android:id="@+id/restaurant_type_header"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:layout_marginStart="8dp"
+        android:layout_marginTop="12dp"
         android:text="Restaurant Type: "
-        app:layout_constraintBaseline_toBaselineOf="@+id/restaurant_type_spinner"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/guideline3" />
+        app:layout_constraintHorizontal_bias="0.149"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/search_bar" />
 
     <Spinner
         android:id="@+id/restaurant_type_spinner"
@@ -60,7 +60,7 @@
         android:layout_marginTop="8dp"
         android:spinnerMode="dropdown"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.701"
+        app:layout_constraintHorizontal_bias="0.598"
         app:layout_constraintStart_toEndOf="@+id/restaurant_type_header"
         app:layout_constraintTop_toBottomOf="@+id/search_bar" />
 
@@ -82,10 +82,10 @@
         android:src="@android:drawable/ic_dialog_map"
         app:layout_constraintBottom_toTopOf="@+id/recommendedRestaurantTextView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.55"
+        app:layout_constraintHorizontal_bias="0.533"
         app:layout_constraintStart_toEndOf="@+id/search_on_map_header"
         app:layout_constraintTop_toBottomOf="@+id/restaurant_type_spinner"
-        app:layout_constraintVertical_bias="0.129" />
+        app:layout_constraintVertical_bias="0.0" />
 
     <androidx.constraintlayout.widget.Barrier
         android:id="@+id/barrier3"
@@ -109,37 +109,25 @@
         android:orientation="vertical"
         app:layout_constraintGuide_end="20dp" />
 
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/restaurantlist_swiperefresh"
-        android:layout_width="359dp"
-        android:layout_height="370dp"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/restaurantlist_rv"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.875">
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/restaurantlist_rv"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/guideline7"
-            app:layout_constraintStart_toStartOf="@+id/guideline6"
-            app:layout_constraintTop_toBottomOf="@+id/recommendedRestaurantTextView" />
-
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+        app:layout_constraintEnd_toStartOf="@+id/guideline7"
+        app:layout_constraintStart_toStartOf="@+id/guideline6"
+        app:layout_constraintTop_toBottomOf="@+id/recommendedRestaurantTextView" />
 
     <TextView
         android:id="@+id/recommendedRestaurantTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="60dp"
+        android:layout_marginStart="4dp"
         android:layout_marginBottom="8dp"
         android:text="Search Results"
         android:textSize="20sp"
         android:textStyle="italic"
-        app:layout_constraintBottom_toTopOf="@+id/restaurantlist_swiperefresh"
+        app:layout_constraintBottom_toTopOf="@+id/barrier2"
         app:layout_constraintStart_toStartOf="@+id/guideline6" />
 
     <TextView
@@ -149,10 +137,10 @@
         android:text="Search on map instead:"
         app:layout_constraintBottom_toTopOf="@+id/recommendedRestaurantTextView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.181"
+        app:layout_constraintHorizontal_bias="0.17"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/restaurant_type_header"
-        app:layout_constraintVertical_bias="0.27" />
+        app:layout_constraintVertical_bias="0.625" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

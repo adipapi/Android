@@ -103,6 +103,7 @@ private FragmentHomeBinding binding;
 
 private void initspinnerfooter(Spinner dropdown) {
     ArrayList<String> items = new  ArrayList<>();
+    items.add("All");
     for(RestaurantTypeEnum type : RestaurantTypeEnum.values()) {
         items.add(type.toString());
     }

@@ -21,7 +21,7 @@ public class Restaurant {
     String name="";
     String address="";
     String phone="";
-    String type = RestaurantTypeEnum.All.toString();
+    String type = "";
     String mainImageUrl="";
     String description="";
     Double location_x=31.2;
