@@ -25,7 +25,10 @@ public class RestaurantViewModel extends ViewModel {
     }
 
     public void getRestaurantById(String restId, RestaurantModel.GetRestaurantById success) {
-        RestaurantModel.instance.getRestaurantById(restId, success);
+        RestaurantModel.instance.getRestaurantById(restId, (e) -> {
+            restaurant.postValue(e);
+            success.onComplete(e);
+        });
     }
 
     public void deleteRestaurantPost(Post post, Integer pos, Runnable success) {

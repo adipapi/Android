@@ -17,6 +17,9 @@ public interface RestaurantDao {
     @Query("SELECT * FROM restaurants")
     List<Restaurant> getAll();
 
+    @Query("SELECT * FROM restaurants where hostId = :hostId")
+    List<Restaurant> getRestaurantsByHost(String hostId);
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(Restaurant restaurant);
 

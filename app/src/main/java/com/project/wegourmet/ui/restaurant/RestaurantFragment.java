@@ -49,11 +49,12 @@ public class RestaurantFragment extends Fragment {
     RecyclerView postsRv;
     PostAdapter adapter;
     List<Post> posts;
+    RestaurantViewModel restaurantViewModel;
     private FloatingActionButton addPostBtn;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        RestaurantViewModel restaurantViewModel =
+        restaurantViewModel =
                 new ViewModelProvider(this).get(RestaurantViewModel.class);
 
         binding = FragmentRestaurantBinding.inflate(inflater, container, false);
@@ -162,27 +163,52 @@ public class RestaurantFragment extends Fragment {
                 Restaurant restaurant = new Restaurant(FirebaseAuth.getInstance().getCurrentUser().getUid(),
                         name.getText().toString(), address.getText().toString(), phone.getText().toString(),
                         restaurantType.getText().toString(), description.getText().toString(), 31.12, 32.12);
-                if (imageBitmap == null) {
-                    restaurantViewModel.addRestaurant(restaurant, () -> {
-                        Toast.makeText(getActivity().getApplicationContext(), "Saved successfully",Toast.LENGTH_SHORT).show();
-                    });
-                } else {
-                    RestaurantModel.instance.saveImage(imageBitmap, restaurant.getHostId() +
-                            restaurant.getName() + ".jpg", url -> {
-                        restaurant.setMainImageUrl(url);
-                        restaurantViewModel.addRestaurant(restaurant, () -> {
-                            Toast.makeText(getActivity().getApplicationContext(), "Saved data successfully!",Toast.LENGTH_SHORT).show();
-                        });
-                    });
+                if(restaurantMode == "EDIT") {
+                    restaurant.setId(restaurantViewModel.restaurant.getValue().getId());
+                    saveRestaurant(restaurant);
+                } else if(restaurantMode == "ADD") {
+                    addRestaurant(restaurant);
                 }
-                restaurantViewModel.restaurant.observe(getViewLifecycleOwner(), (updatedRestaurant) -> {
-//                    FragmentManager fm = getFragmentManager();
-                    Toast.makeText(getActivity().getApplicationContext(), "Saved successfully",Toast.LENGTH_SHORT).show();
-                });
             }
         });
 
         return root;
+    }
+
+    private void saveRestaurant(Restaurant restaurant) {
+        if (imageBitmap == null) {
+            RestaurantModel.instance.setRestaurant(restaurant, () -> {
+                Toast.makeText(getActivity().getApplicationContext(), "Saved successfully",Toast.LENGTH_SHORT).show();
+            });
+        } else {
+            RestaurantModel.instance.saveImage(imageBitmap, restaurant.getHostId() +
+                    restaurant.getName() + ".jpg", url -> {
+                restaurant.setMainImageUrl(url);
+                RestaurantModel.instance.setRestaurant(restaurant, () -> {
+                    Toast.makeText(getActivity().getApplicationContext(), "Saved data successfully!",Toast.LENGTH_SHORT).show();
+                });
+            });
+        }
+        restaurantViewModel.restaurant.observe(getViewLifecycleOwner(), (updatedRestaurant) -> {
+//                    FragmentManager fm = getFragmentManager();
+            Toast.makeText(getActivity().getApplicationContext(), "Saved successfully",Toast.LENGTH_SHORT).show();
+        });
+    }
+
+    private void addRestaurant(Restaurant restaurant) {
+        if (imageBitmap == null) {
+            restaurantViewModel.addRestaurant(restaurant, () -> {
+                Toast.makeText(getActivity().getApplicationContext(), "Saved successfully",Toast.LENGTH_SHORT).show();
+            });
+        } else {
+            RestaurantModel.instance.saveImage(imageBitmap, restaurant.getHostId() +
+                    restaurant.getName() + ".jpg", url -> {
+                restaurant.setMainImageUrl(url);
+                restaurantViewModel.addRestaurant(restaurant, () -> {
+                    Toast.makeText(getActivity().getApplicationContext(), "Saved data successfully!",Toast.LENGTH_SHORT).show();
+                });
+            });
+        }
     }
 
     private void openCam() {

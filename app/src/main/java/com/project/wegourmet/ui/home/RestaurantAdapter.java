@@ -26,7 +26,7 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantViewHolder
     }
 
     // data is passed into the constructor
-    RestaurantAdapter(List<Restaurant> restaurants) {
+    public RestaurantAdapter(List<Restaurant> restaurants) {
         this.restaurants = restaurants;
     }
 
@@ -52,10 +52,6 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantViewHolder
         }
         return restaurants.size();
     }
-}
-
-interface OnItemClickListener{
-    void onItemClick(View v,int position);
 }
 
 class RestaurantViewHolder extends RecyclerView.ViewHolder{

@@ -46,13 +46,13 @@ public class RestaurantModel {
     MutableLiveData<List<Restaurant>> restaurantsList = new MutableLiveData<List<Restaurant>>();
 
     public MutableLiveData<List<Restaurant>> getAll() {
-//        executor.execute(() -> {
-//            List<Restaurant> rests = AppLocalDb.db.restaurantDao().getAll();
-//
-//            if(rests != null) {
-//                restaurantsList.postValue(rests);
-//            }
-//        });
+        executor.execute(() -> {
+            List<Restaurant> rests = AppLocalDb.db.restaurantDao().getAll();
+
+            if(rests != null) {
+                restaurantsList.postValue(rests);
+            }
+        });
 
         modelFirebase.getAllRestaurants((fbRestaurants) -> {
             executor.execute(() -> {
@@ -65,6 +65,28 @@ public class RestaurantModel {
         }
         ;
         return restaurantsList;
+    }
+
+
+    MutableLiveData<List<Restaurant>> restaurantsByHost = new MutableLiveData<List<Restaurant>>();
+
+    public MutableLiveData<List<Restaurant>> getRestaurantsByHost(String hostId) {
+        executor.execute(() -> {
+            List<Restaurant> rests = AppLocalDb.db.restaurantDao().getRestaurantsByHost(hostId);
+
+            if(rests != null) {
+                restaurantsByHost.postValue(rests);
+            }
+        });
+
+        modelFirebase.getRestaurantsByHost(hostId,(fbRestaurants) -> {
+            executor.execute(() -> {
+                AppLocalDb.db.restaurantDao().insertMany((List<Restaurant>) fbRestaurants);
+                restaurantsByHost.postValue((List<Restaurant>) fbRestaurants);
+            });
+        });
+
+        return restaurantsByHost;
     }
 
 //    public void refreshRestaurantList() {
@@ -114,12 +136,27 @@ public class RestaurantModel {
 
     public void addRestaurant(Restaurant addedRestaurant, Runnable success) {
         modelFirebase.addRestaurant(addedRestaurant, new OnSuccessListener() {
+                 @Override
+                public void onSuccess(Object o) {
+                    executor.execute(() -> {
+                        AppLocalDb.db.restaurantDao().insert(addedRestaurant);
+                        restaurant.postValue(addedRestaurant);
+                        mainThread.post(success);
+                    });
+                }
+        });
+//            listener.onSuccess();
+//            refreshRestaurantList();
+    }
+
+    public void setRestaurant(Restaurant setRestaurant, Runnable success) {
+        modelFirebase.setRestaurant(setRestaurant, new OnSuccessListener() {
             @Override
             public void onSuccess(Object o) {
                 executor.execute(() -> {
-                    AppLocalDb.db.restaurantDao().insert(addedRestaurant);
-                    restaurant.postValue(addedRestaurant);
-                    success.run();
+                    AppLocalDb.db.restaurantDao().insert(setRestaurant);
+                    restaurant.postValue(setRestaurant);
+                    mainThread.post(success);
                 });
             }
         });

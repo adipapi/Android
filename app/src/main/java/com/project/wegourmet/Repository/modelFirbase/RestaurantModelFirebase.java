@@ -45,6 +45,11 @@ public class RestaurantModelFirebase {
     }
 
     // Methods
+    public void setRestaurant(Restaurant restaurant,OnSuccessListener successListener) {
+        db.collection(Restaurant.COLLECTION_NAME).document(restaurant.getId()).set(restaurant).addOnSuccessListener(successListener);
+    }
+
+    // Methods
     public void addRestaurant(Restaurant restaurant,OnSuccessListener successListener) {
         DocumentReference ref = db.collection(COLLECTION_NAME).document();
         restaurant.setId(ref.getId());
@@ -69,6 +74,26 @@ public class RestaurantModelFirebase {
                     listener.onComplete(list);
                 });
     }
+
+    public void getRestaurantsByHost(String hostId, RestaurantModelFirebase.GetAllRestaurantsListener listener) {
+        db.collection(Restaurant.COLLECTION_NAME)
+                .whereEqualTo("hostId", hostId )
+//                .whereGreaterThanOrEqualTo("updateDate",new Timestamp(lastUpdateDate,0))
+                .get()
+                .addOnCompleteListener(task -> {
+                    List<Restaurant> list = new LinkedList<Restaurant>();
+                    if (task.isSuccessful()){
+                        for (QueryDocumentSnapshot doc : task.getResult()){
+                            Restaurant restaurant = Restaurant.create(doc.getData());
+                            if (restaurant != null){
+                                list.add(restaurant);
+                            }
+                        }
+                    }
+                    listener.onComplete(list);
+                });
+    }
+
 
     public void getRestaurantById(String restaurantId, RestaurantModel.GetRestaurantById listener) {
         db.collection(Restaurant.COLLECTION_NAME)
