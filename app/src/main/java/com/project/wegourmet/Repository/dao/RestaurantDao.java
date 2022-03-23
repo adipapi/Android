@@ -18,4 +18,6 @@ public interface RestaurantDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(Restaurant restaurant);
+
+    void insertAll(Restaurant restaurant);
 }

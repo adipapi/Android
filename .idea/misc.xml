@@ -3,6 +3,38 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/Adi/Desktop/Projects/Android/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.328" />
+        <entry key="..\:/Users/Adi/Desktop/Projects/Android/app/src/main/res/drawable/baseline_stars_black_24dp.xml" value="0.328" />
+        <entry key="..\:/Users/Adi/Desktop/Projects/Android/app/src/main/res/drawable/element_background.xml" value="0.3735" />
+        <entry key="..\:/Users/Adi/Desktop/Projects/Android/app/src/main/res/drawable/hamburger.xml" value="0.3735" />
+        <entry key="..\:/Users/Adi/Desktop/Projects/Android/app/src/main/res/drawable/ic_dashboard_black_24dp.xml" value="0.3395" />
+        <entry key="..\:/Users/Adi/Desktop/Projects/Android/app/src/main/res/drawable/ic_history_black_24dp.xml" value="0.3395" />
+        <entry key="..\:/Users/Adi/Desktop/Projects/Android/app/src/main/res/drawable/ic_home_black_24dp.xml" value="0.3395" />
+        <entry key="..\:/Users/Adi/Desktop/Projects/Android/app/src/main/res/drawable/ic_launcher_background.xml" value="0.328" />
+        <entry key="..\:/Users/Adi/Desktop/Projects/Android/app/src/main/res/drawable/ic_notifications_black_24dp.xml" value="0.328" />
+        <entry key="..\:/Users/Adi/Desktop/Projects/Android/app/src/main/res/drawable/ic_person_black_24dp.xml" value="0.259" />
+        <entry key="..\:/Users/Adi/Desktop/Projects/Android/app/src/main/res/drawable/ic_tume.xml" value="0.3735" />
+        <entry key="..\:/Users/Adi/Desktop/Projects/Android/app/src/main/res/drawable/non_stretching_bg_img.xml" value="0.328" />
+        <entry key="..\:/Users/Adi/Desktop/Projects/Android/app/src/main/res/layout/activity_guest.xml" value="0.39114583333333336" />
+        <entry key="..\:/Users/Adi/Desktop/Projects/Android/app/src/main/res/layout/activity_host.xml" value="0.4421875" />
+        <entry key="..\:/Users/Adi/Desktop/Projects/Android/app/src/main/res/layout/activity_main.xml" value="0.24139492753623187" />
+        <entry key="..\:/Users/Adi/Desktop/Projects/Android/app/src/main/res/layout/activity_unsigned.xml" value="0.4421875" />
+        <entry key="..\:/Users/Adi/Desktop/Projects/Android/app/src/main/res/layout/fragment_dashboard.xml" value="0.1" />
+        <entry key="..\:/Users/Adi/Desktop/Projects/Android/app/src/main/res/layout/fragment_favorites.xml" value="0.3875" />
+        <entry key="..\:/Users/Adi/Desktop/Projects/Android/app/src/main/res/layout/fragment_history.xml" value="0.4421875" />
+        <entry key="..\:/Users/Adi/Desktop/Projects/Android/app/src/main/res/layout/fragment_home.xml" value="0.10648148148148148" />
+        <entry key="..\:/Users/Adi/Desktop/Projects/Android/app/src/main/res/layout/fragment_login.xml" value="0.33" />
+        <entry key="..\:/Users/Adi/Desktop/Projects/Android/app/src/main/res/layout/fragment_my_restaurants.xml" value="0.25" />
+        <entry key="..\:/Users/Adi/Desktop/Projects/Android/app/src/main/res/layout/fragment_profile.xml" value="0.3745471014492754" />
+        <entry key="..\:/Users/Adi/Desktop/Projects/Android/app/src/main/res/layout/fragment_register.xml" value="0.5" />
+        <entry key="..\:/Users/Adi/Desktop/Projects/Android/app/src/main/res/layout/fragment_restaurant.xml" value="0.33" />
+        <entry key="..\:/Users/Adi/Desktop/Projects/Android/app/src/main/res/layout/fragment_restaurant_details.xml" value="0.3729166666666667" />
+        <entry key="..\:/Users/Adi/Desktop/Projects/Android/app/src/main/res/layout/fragment_restaurant_page.xml" value="0.3729166666666667" />
+        <entry key="..\:/Users/Adi/Desktop/Projects/Android/app/src/main/res/layout/fragment_search.xml" value="0.3875" />
+        <entry key="..\:/Users/Adi/Desktop/Projects/Android/app/src/main/res/layout/list_item.xml" value="0.3875" />
+        <entry key="..\:/Users/Adi/Desktop/Projects/Android/app/src/main/res/menu/bottom_nav_menu.xml" value="0.3875" />
+        <entry key="..\:/Users/Adi/Desktop/Projects/Android/app/src/main/res/menu/host_bottom_nav_menu.xml" value="0.1" />
+        <entry key="..\:/Users/Adi/Desktop/Projects/Android/app/src/main/res/menu/restaurant_list_menu.xml" value="0.5541666666666667" />
         <entry key="..\:/Users/Bar/Documents/Projects/WeGourmet/app/src/main/res/drawable/ic_dashboard_black_24dp.xml" value="0.33" />
         <entry key="..\:/Users/Bar/Documents/Projects/WeGourmet/app/src/main/res/drawable/ic_notifications_black_24dp.xml" value="0.33" />
         <entry key="..\:/Users/Bar/Documents/Projects/WeGourmet/app/src/main/res/drawable/non_stretching_bg_img.xml" value="0.3285" />
