@@ -89,6 +89,19 @@ public class RestaurantModel {
         return restaurantsByHost;
     }
 
+    public void delete(Restaurant deletedRestaurant, Runnable success) {
+        deletedRestaurant.setDeleted(true);
+        modelFirebase.setRestaurant(deletedRestaurant, (e) -> {
+            executor.execute(() -> {
+                AppLocalDb.db.restaurantDao().delete(deletedRestaurant);
+                restaurant.postValue(deletedRestaurant);
+                mainThread.post(() -> {
+                    success.run();
+                });
+            });
+        });
+    }
+
 //    public void refreshRestaurantList() {
 //        restaurantListLoadingState.setValue(RestaurantListLoadingState.loading);
 //
@@ -168,9 +181,8 @@ public class RestaurantModel {
         void onComplete(Restaurant restaurant);
     }
 
-    public Restaurant getRestaurantById(String restaurantId, GetRestaurantById listener) {
+    public void getRestaurantById(String restaurantId, GetRestaurantById listener) {
         modelFirebase.getRestaurantById(restaurantId, listener);
-        return null;
     }
 
 //    public Restaurant getRestaurantByName(String restaurantName, OnSU listener) {

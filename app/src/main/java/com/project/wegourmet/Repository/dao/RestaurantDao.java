@@ -1,6 +1,7 @@
 package com.project.wegourmet.Repository.dao;
 
 import androidx.room.Dao;
+import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
@@ -26,5 +27,7 @@ public interface RestaurantDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertMany(List<Restaurant> restaurants);
 
+    @Delete
+    void delete(Restaurant restaurant);
 //    void insertAll(Restaurant restaurant);
 }

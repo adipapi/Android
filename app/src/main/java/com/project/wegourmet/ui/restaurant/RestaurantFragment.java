@@ -47,6 +47,9 @@ public class RestaurantFragment extends Fragment {
     EditText name;
     EditText address;
     EditText phone;
+    EditText restaurantType;
+    EditText coordinateX;
+    EditText coordinateY;
     Spinner restaurantTypeSpinner;
     EditText description;
     ImageButton camBtn;
@@ -66,13 +69,15 @@ public class RestaurantFragment extends Fragment {
         View root = binding.getRoot();
 
         String restaurantMode = RestaurantFragmentArgs.fromBundle(getArguments()).getRestaurantMode();
-        String restaurantName = RestaurantFragmentArgs.fromBundle(getArguments()).getRestaurantId();
+        String restaurantId = RestaurantFragmentArgs.fromBundle(getArguments()).getRestaurantId();
 
         saveButton = root.findViewById(R.id.save_restaurant_btn);
         name = root.findViewById(R.id.restaurant_name);
         address = root.findViewById(R.id.restaurant_address);
         phone = root.findViewById(R.id.restaurant_phone);
         restaurantTypeSpinner = root.findViewById(R.id.choose_restaurant_type);
+        coordinateX = root.findViewById(R.id.location_x);
+        coordinateY = root.findViewById(R.id.location_y);
         restaurantImage = root.findViewById(R.id.restaurant_image);
         camBtn = root.findViewById(R.id.restaurant_cam_btn);
         galleryBtn = root.findViewById(R.id.restaurant_gallery_btn);
@@ -88,6 +93,10 @@ public class RestaurantFragment extends Fragment {
             phone.setFocusable(false);
             restaurantTypeSpinner.setEnabled(false);
             restaurantTypeSpinner.setFocusable(false);
+            coordinateX.setClickable(false);
+            coordinateX.setFocusable(false);
+            coordinateY.setClickable(false);
+            coordinateY.setFocusable(false);
             description.setFocusable(false);
             description.setFocusable(false);
             camBtn.setVisibility(View.INVISIBLE);
@@ -112,7 +121,7 @@ public class RestaurantFragment extends Fragment {
             public void onItemClick(View v,int position) {
                 String postId = posts.get(position).getId();
                 if (Navigation.findNavController(getView()).getCurrentDestination().getId() == R.id.navigation_restaurant) {
-                    Navigation.findNavController(getView()).navigate(RestaurantFragmentDirections.actionNavigationRestaurantToNavigationPost(postId, "EDIT", ""));
+                    Navigation.findNavController(getView()).navigate(RestaurantFragmentDirections.actionNavigationRestaurantToNavigationPost(postId, "EDIT", restaurantId));
                 }
             }
         });
@@ -130,14 +139,14 @@ public class RestaurantFragment extends Fragment {
             }
         });
 
-        // TODO : ask if there is a input of restaurant name, if so than select posts, if not
-        // We are in new restaurant mode, we dont have any posts.
-        if(!restaurantName.isEmpty()) {
-            restaurantViewModel.getRestaurantById(restaurantName, (rest -> {
+        if(!restaurantId.isEmpty()) {
+            restaurantViewModel.getRestaurantById(restaurantId, (rest -> {
                 name.setText(rest.getName());
                 address.setText(rest.getAddress());
                 phone.setText(rest.getPhone());
                 restaurantTypeSpinner.setSelection(RestaurantTypeEnum.valueOf(rest.getType()).ordinal());
+                coordinateX.setText(rest.getLocation_x().toString());
+                coordinateY.setText(rest.getLocation_y().toString());
                 description.setText(rest.getDescription());
                 if (rest.getMainImageUrl() != null && !rest.getMainImageUrl().isEmpty()) {
                     Picasso.get()
@@ -145,7 +154,7 @@ public class RestaurantFragment extends Fragment {
                             .into(restaurantImage);
                 }
             }));
-            restaurantViewModel.getPostsByRestaurant(restaurantName);
+            restaurantViewModel.getPostsByRestaurant(restaurantId);
             restaurantViewModel.posts.observe(getViewLifecycleOwner(), (postsByRestaurants) -> {
                 posts = postsByRestaurants;
                 adapter.posts = postsByRestaurants;
@@ -159,7 +168,7 @@ public class RestaurantFragment extends Fragment {
 
         addPostBtn.setOnClickListener(v -> {
             Navigation.findNavController(getView())
-                    .navigate(RestaurantFragmentDirections.actionNavigationRestaurantToNavigationPost("","ADD","BBB"));
+                    .navigate(RestaurantFragmentDirections.actionNavigationRestaurantToNavigationPost("","ADD",restaurantId));
         });
 
 
@@ -170,7 +179,9 @@ public class RestaurantFragment extends Fragment {
             public void onClick(View view) {
                 Restaurant restaurant = new Restaurant(FirebaseAuth.getInstance().getCurrentUser().getUid(),
                         name.getText().toString(), address.getText().toString(), phone.getText().toString(),
-                        restaurantTypeSpinner.getSelectedItem().toString(), description.getText().toString(), 31.12, 32.12);
+                        restaurantTypeSpinner.getSelectedItem().toString(), description.getText().toString(),
+                        Double.parseDouble(coordinateX.getText().toString()),
+                        Double.parseDouble(coordinateY.getText().toString()), false);
                 if(restaurantMode == "EDIT") {
                     restaurant.setId(restaurantViewModel.restaurant.getValue().getId());
                     saveRestaurant(restaurant);

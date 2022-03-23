@@ -75,7 +75,7 @@ private FragmentHomeBinding binding;
                 String rsId = homeViewModel.restaurants.getValue().get(position).getId();
                 Navigation.findNavController(v).navigate(HomeFragmentDirections.actionNavigationHomeToNavigationRestaurant("VIEW",rsId));
             }
-        });
+        }, null);
         Spinner dropdown;
         dropdown = root.findViewById(R.id.restaurant_type_spinner);
         initspinnerfooter(dropdown);

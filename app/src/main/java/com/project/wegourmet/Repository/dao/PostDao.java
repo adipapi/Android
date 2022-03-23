@@ -20,8 +20,8 @@ public interface PostDao {
     @Query("SELECT * FROM posts where id = :id")
     Post getById(String id);
 
-    @Query("SELECT * FROM posts where restaurantName = :restaurantName")
-    List<Post> getPostsByRestaurant(String restaurantName);
+    @Query("SELECT * FROM posts where id = :restaurantId")
+    List<Post> getPostsByRestaurant(String restaurantId);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(Post post);
