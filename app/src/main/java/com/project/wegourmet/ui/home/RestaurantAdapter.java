@@ -1,9 +1,13 @@
 package com.project.wegourmet.ui.home;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
 import android.widget.ImageView;
+import android.widget.SearchView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -13,12 +17,18 @@ import com.project.wegourmet.R;
 import com.project.wegourmet.model.Restaurant;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
 public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantViewHolder>{
 
     public List<Restaurant> restaurants;
+    public List<Restaurant> originalRestaurants;
+    public Spinner restaurantTypeSpinner;
+
+    public Context context;
+
     OnItemClickListener listener;
 
     public void setOnItemClickListener(OnItemClickListener listener){
@@ -28,6 +38,7 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantViewHolder
     // data is passed into the constructor
     public RestaurantAdapter(List<Restaurant> restaurants) {
         this.restaurants = restaurants;
+        this.originalRestaurants = restaurants;
     }
 
     @NonNull
@@ -41,8 +52,43 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantViewHolder
     @Override
     public void onBindViewHolder(@NonNull RestaurantViewHolder holder, int position) {
         Restaurant restaurant = restaurants.get(position);
-//        Restaurant restaurant = viewModel.getData().getValue().get(position);
         holder.bind(restaurant);
+    }
+
+    public Filter getFilter() {
+        return new Filter() {
+            @SuppressWarnings("unchecked")
+            @Override
+            protected void publishResults(CharSequence constraint, FilterResults results) {
+                restaurants = (List<Restaurant>) results.values;
+                notifyDataSetChanged();
+            }
+
+            @Override
+            protected FilterResults performFiltering(CharSequence constraint) {
+                List<Restaurant> filteredResults = null;
+
+                filteredResults = getFilteredResults(constraint.toString().toLowerCase());
+
+                FilterResults results = new FilterResults();
+                results.values = filteredResults;
+
+                return results;
+            }
+        };
+    }
+
+    protected List<Restaurant> getFilteredResults(String constraint) {
+        List<Restaurant> results = new ArrayList<>();
+
+        for (Restaurant item : originalRestaurants) {
+            if (item.getName().toLowerCase().contains(constraint)) {
+                if(restaurantTypeSpinner.getSelectedItem().toString().equals(RestaurantTypeEnum.All.toString())  ||  restaurantTypeSpinner.getSelectedItem().toString().equals(item.getType())) {
+                    results.add(item);
+                }
+            }
+        }
+        return results;
     }
 
     @Override
@@ -76,7 +122,7 @@ class RestaurantViewHolder extends RecyclerView.ViewHolder{
 
     void bind(Restaurant restaurant){
         name.setText(restaurant.getName());
-        address.setText(restaurant.getId());
+        address.setText(restaurant.getAddress());
         if (restaurant.getMainImageUrl() != null && !restaurant.getMainImageUrl().isEmpty()) {
             Picasso.get()
                     .load(restaurant.getMainImageUrl())

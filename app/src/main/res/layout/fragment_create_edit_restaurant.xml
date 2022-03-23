@@ -57,12 +57,11 @@
         app:layout_constraintTop_toBottomOf="@+id/restaurant_cam_btn"
         app:layout_constraintVertical_bias="0.04" />
 
-    <EditText
-        android:id="@+id/restaurant_type"
+    <Spinner
+        android:id="@+id/choose_restaurant_type"
         android:layout_width="181dp"
         android:layout_height="56dp"
         android:ems="10"
-        android:hint="restaurant type"
         android:inputType="text"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

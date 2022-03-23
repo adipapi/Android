@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/Adi/AppData/Local/Android/Sdk/platforms/android-32/data/res/layout/simple_spinner_item.xml" value="0.4109375" />
         <entry key="..\:/Users/Adi/Desktop/Projects/Android/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.328" />
         <entry key="..\:/Users/Adi/Desktop/Projects/Android/app/src/main/res/drawable/baseline_stars_black_24dp.xml" value="0.328" />
         <entry key="..\:/Users/Adi/Desktop/Projects/Android/app/src/main/res/drawable/element_background.xml" value="0.3735" />
@@ -19,6 +20,8 @@
         <entry key="..\:/Users/Adi/Desktop/Projects/Android/app/src/main/res/layout/activity_host.xml" value="0.4421875" />
         <entry key="..\:/Users/Adi/Desktop/Projects/Android/app/src/main/res/layout/activity_main.xml" value="0.24139492753623187" />
         <entry key="..\:/Users/Adi/Desktop/Projects/Android/app/src/main/res/layout/activity_unsigned.xml" value="0.4421875" />
+        <entry key="..\:/Users/Adi/Desktop/Projects/Android/app/src/main/res/layout/fragment_create_edit_restaurant.xml" value="0.5541666666666667" />
+        <entry key="..\:/Users/Adi/Desktop/Projects/Android/app/src/main/res/layout/fragment_create_restaurant.xml" value="0.36041666666666666" />
         <entry key="..\:/Users/Adi/Desktop/Projects/Android/app/src/main/res/layout/fragment_dashboard.xml" value="0.1" />
         <entry key="..\:/Users/Adi/Desktop/Projects/Android/app/src/main/res/layout/fragment_favorites.xml" value="0.3875" />
         <entry key="..\:/Users/Adi/Desktop/Projects/Android/app/src/main/res/layout/fragment_history.xml" value="0.4421875" />

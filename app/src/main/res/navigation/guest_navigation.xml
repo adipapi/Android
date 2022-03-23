@@ -33,7 +33,7 @@
         android:id="@+id/navigation_restaurant"
         android:name="com.project.wegourmet.ui.restaurant.RestaurantFragment"
         android:label="@string/title_restaurant"
-        tools:layout="@layout/fragment_restaurant" >
+        tools:layout="@layout/fragment_create_edit_restaurant" >
         <action
             android:id="@+id/action_navigation_restaurant_to_navigation_post"
             app:destination="@id/navigation_post" />

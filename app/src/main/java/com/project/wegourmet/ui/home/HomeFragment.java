@@ -2,10 +2,15 @@ package com.project.wegourmet.ui.home;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
+import android.widget.SearchView;
+import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -16,11 +21,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.project.wegourmet.MapActivity;
 import com.project.wegourmet.R;
-import com.project.wegourmet.UnsignedActivity;
 import com.project.wegourmet.databinding.FragmentHomeBinding;
 import com.project.wegourmet.model.Restaurant;
-import com.project.wegourmet.ui.restaurant.RestaurantListRvFragment;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class HomeFragment extends Fragment {
@@ -31,6 +35,7 @@ private FragmentHomeBinding binding;
     RestaurantAdapter adapter;
     RecyclerView restaurantsRv;
     ImageButton mapViewBtn;
+    SearchView searchBar;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
             ViewGroup container, Bundle savedInstanceState) {
@@ -48,6 +53,22 @@ private FragmentHomeBinding binding;
         adapter = new RestaurantAdapter(restaurants);
         restaurantsRv.setAdapter(adapter);
 
+
+        searchBar = root.findViewById(R.id.search_bar);
+
+        searchBar.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String text) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String text) {
+                adapter.getFilter().filter(text);
+                return true;
+            }
+        });
+
         adapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(View v,int position) {
@@ -55,11 +76,16 @@ private FragmentHomeBinding binding;
                 Navigation.findNavController(v).navigate(HomeFragmentDirections.actionNavigationHomeToNavigationRestaurant("VIEW",rsId));
             }
         });
+        Spinner dropdown;
+        dropdown = root.findViewById(R.id.restaurant_type_spinner);
+        initspinnerfooter(dropdown);
 
         homeViewModel.getRestaurants();
         homeViewModel.restaurants.observe(getViewLifecycleOwner(), (rests) -> {
             restaurants = rests;
             adapter.restaurants = rests;
+            adapter.originalRestaurants = rests;
+            adapter.restaurantTypeSpinner = dropdown;
             adapter.notifyDataSetChanged();
         });
 
@@ -74,6 +100,27 @@ private FragmentHomeBinding binding;
 
         return root;
     }
+
+private void initspinnerfooter(Spinner dropdown) {
+    ArrayList<String> items = new  ArrayList<>();
+    for(RestaurantTypeEnum type : RestaurantTypeEnum.values()) {
+        items.add(type.toString());
+    }
+
+    ArrayAdapter<String> dropdownAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, items);
+    dropdown.setAdapter(dropdownAdapter);
+    dropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        @Override
+        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            adapter.getFilter().filter(searchBar.getQuery().toString());
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> parent) {
+            // TODO Auto-generated method stub
+        }
+    });
+}
 
 @Override
     public void onDestroyView() {

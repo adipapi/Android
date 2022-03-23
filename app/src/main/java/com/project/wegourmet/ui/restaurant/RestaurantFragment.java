@@ -8,10 +8,13 @@ import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -26,23 +29,25 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.project.wegourmet.R;
 import com.project.wegourmet.Repository.model.RestaurantModel;
-import com.project.wegourmet.databinding.FragmentRestaurantBinding;
+import com.project.wegourmet.databinding.FragmentCreateEditRestaurantBinding;
 import com.project.wegourmet.model.Post;
 import com.project.wegourmet.model.Restaurant;
+import com.project.wegourmet.ui.home.RestaurantTypeEnum;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class RestaurantFragment extends Fragment {
     private static final int REQUEST_CAMERA = 1;
-    private FragmentRestaurantBinding binding;
+    private FragmentCreateEditRestaurantBinding binding;
     Button saveButton;
     ImageView restaurantImage;
     Bitmap imageBitmap;
     EditText name;
     EditText address;
     EditText phone;
-    EditText restaurantType;
+    Spinner restaurantTypeSpinner;
     EditText description;
     ImageButton camBtn;
     ImageButton galleryBtn;
@@ -57,7 +62,7 @@ public class RestaurantFragment extends Fragment {
         restaurantViewModel =
                 new ViewModelProvider(this).get(RestaurantViewModel.class);
 
-        binding = FragmentRestaurantBinding.inflate(inflater, container, false);
+        binding = FragmentCreateEditRestaurantBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
         String restaurantMode = RestaurantFragmentArgs.fromBundle(getArguments()).getRestaurantMode();
@@ -67,7 +72,7 @@ public class RestaurantFragment extends Fragment {
         name = root.findViewById(R.id.restaurant_name);
         address = root.findViewById(R.id.restaurant_address);
         phone = root.findViewById(R.id.restaurant_phone);
-        restaurantType = root.findViewById(R.id.restaurant_type);
+        restaurantTypeSpinner = root.findViewById(R.id.choose_restaurant_type);
         restaurantImage = root.findViewById(R.id.restaurant_image);
         camBtn = root.findViewById(R.id.restaurant_cam_btn);
         galleryBtn = root.findViewById(R.id.restaurant_gallery_btn);
@@ -81,8 +86,8 @@ public class RestaurantFragment extends Fragment {
             address.setFocusable(false);
             phone.setClickable(false);
             phone.setFocusable(false);
-            restaurantType.setClickable(false);
-            restaurantType.setFocusable(false);
+            restaurantTypeSpinner.setEnabled(false);
+            restaurantTypeSpinner.setFocusable(false);
             description.setFocusable(false);
             description.setFocusable(false);
             camBtn.setVisibility(View.INVISIBLE);
@@ -132,7 +137,7 @@ public class RestaurantFragment extends Fragment {
                 name.setText(rest.getName());
                 address.setText(rest.getAddress());
                 phone.setText(rest.getPhone());
-                restaurantType.setText(rest.getType());
+                restaurantTypeSpinner.setSelection(RestaurantTypeEnum.valueOf(rest.getType()).ordinal());
                 description.setText(rest.getDescription());
                 if (rest.getMainImageUrl() != null && !rest.getMainImageUrl().isEmpty()) {
                     Picasso.get()
@@ -157,12 +162,15 @@ public class RestaurantFragment extends Fragment {
                     .navigate(RestaurantFragmentDirections.actionNavigationRestaurantToNavigationPost("","ADD","BBB"));
         });
 
+
+        initspinnerfooter(restaurantTypeSpinner);
+
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Restaurant restaurant = new Restaurant(FirebaseAuth.getInstance().getCurrentUser().getUid(),
                         name.getText().toString(), address.getText().toString(), phone.getText().toString(),
-                        restaurantType.getText().toString(), description.getText().toString(), 31.12, 32.12);
+                        restaurantTypeSpinner.getSelectedItem().toString(), description.getText().toString(), 31.12, 32.12);
                 if(restaurantMode == "EDIT") {
                     restaurant.setId(restaurantViewModel.restaurant.getValue().getId());
                     saveRestaurant(restaurant);
@@ -232,5 +240,28 @@ public class RestaurantFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
+    }
+
+    private void initspinnerfooter(Spinner dropdown) {
+        ArrayList<String> items = new  ArrayList<>();
+        for(RestaurantTypeEnum type : RestaurantTypeEnum.values()) {
+            if(type != RestaurantTypeEnum.All) {
+                items.add(type.toString());
+            }
+        }
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, items);
+        dropdown.setAdapter(adapter);
+        dropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+//                Log.v("item", (String) parent.getItemAtPosition(position));
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                // TODO Auto-generated method stub
+            }
+        });
     }
 }

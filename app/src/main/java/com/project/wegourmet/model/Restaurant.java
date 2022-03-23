@@ -6,6 +6,7 @@ import androidx.room.PrimaryKey;
 
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.FieldValue;
+import com.project.wegourmet.ui.home.RestaurantTypeEnum;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -20,7 +21,7 @@ public class Restaurant {
     String name="";
     String address="";
     String phone="";
-    String type="";
+    String type = RestaurantTypeEnum.All.toString();
     String mainImageUrl="";
     String description="";
     Double location_x;
