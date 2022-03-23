@@ -6,11 +6,13 @@ import android.net.Uri;
 import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
@@ -43,13 +45,12 @@ public class RestaurantModelFirebase {
     }
 
     // Methods
-    public void addRestaurant(Restaurant restaurant, RestaurantModel.AddRestaurantListener listener) {
-        Map<String, Object> json = restaurant.toJson();
-        db.collection(Restaurant.COLLECTION_NAME)
-                .document(restaurant.getId())
-                .set(json)
-                .addOnSuccessListener(unused -> listener.onComplete())
-                .addOnFailureListener(e -> listener.onComplete());
+    public void addRestaurant(Restaurant restaurant, OnFailureListener failureListener, OnSuccessListener successListener) {
+        DocumentReference ref = db.collection(COLLECTION_NAME).document();
+        restaurant.setId(ref.getId());
+        ref.set(restaurant)
+                .addOnSuccessListener(successListener)
+                .addOnFailureListener(failureListener);
     }
 
     public void getAllRestaurants(Long lastUpdateDate, RestaurantModelFirebase.GetAllRestaurantsListener listener) {

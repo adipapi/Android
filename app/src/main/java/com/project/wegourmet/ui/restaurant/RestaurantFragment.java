@@ -50,6 +50,7 @@ public class RestaurantFragment extends Fragment {
     EditText address;
     EditText phone;
     EditText restaurantType;
+    EditText description;
     ImageButton camBtn;
     ImageButton galleryBtn;
     RecyclerView postsRv;
@@ -75,6 +76,7 @@ public class RestaurantFragment extends Fragment {
         restaurantType = root.findViewById(R.id.restaurant_type);
         restaurantImage = root.findViewById(R.id.restaurant_image);
         camBtn = root.findViewById(R.id.restaurant_cam_btn);
+        description = root.findViewById(R.id.description);
         addPostBtn = (FloatingActionButton) root.findViewById(R.id.restaurant_add_post);
 
         if(restaurantMode != "EDIT") {
@@ -137,7 +139,7 @@ public class RestaurantFragment extends Fragment {
             public void onClick(View view) {
                 Restaurant restaurant = new Restaurant(FirebaseAuth.getInstance().getCurrentUser().getUid(),
                         name.getText().toString(), address.getText().toString(), phone.getText().toString(),
-                        restaurantType.getText().toString());
+                        restaurantType.getText().toString(), description.getText().toString());
                 if (imageBitmap == null) {
                     restaurantViewModel.addRestaurant(restaurant, (e) -> {
                         Toast.makeText(getActivity().getApplicationContext(), "Saved successfully",Toast.LENGTH_SHORT).show();

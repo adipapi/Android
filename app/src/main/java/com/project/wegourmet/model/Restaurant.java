@@ -29,9 +29,8 @@ public class Restaurant {
 
     public Restaurant(){}
 
-    public Restaurant(String id,String hostId, String name, String address, String phone,
+    public Restaurant(String hostId, String name, String address, String phone,
                       String type, String description) {
-        this.id = id;
         this.hostId = hostId;
         this.name = name;
         this.address = address;
@@ -138,9 +137,11 @@ public class Restaurant {
         Timestamp ts = (Timestamp)json.get("updateDate");
         Long updateDate = ts.getSeconds();
 
-        Restaurant restaurant = new Restaurant(id,hostId,name,address,phone,type,description);
+        Restaurant restaurant = new Restaurant(hostId,name,address,phone,type,description);
+        restaurant.setId(id);
         restaurant.setUpdateDate(updateDate);
         restaurant.setMainImageUrl(mainImageUrl);
         return restaurant;
+
     }
 }

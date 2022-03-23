@@ -10,6 +10,7 @@ import androidx.core.os.HandlerCompat;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.project.wegourmet.Repository.modelFirbase.RestaurantModelFirebase;
 import com.project.wegourmet.WegourmetApplication;
 import com.project.wegourmet.model.Restaurant;
@@ -23,6 +24,8 @@ public class RestaurantModel {
     public Executor executor = Executors.newFixedThreadPool(1);
     public Handler mainThread = HandlerCompat.createAsync(Looper.getMainLooper());
     RestaurantModelFirebase modelFirebase = new RestaurantModelFirebase();
+    MutableLiveData<Restaurant> restaurant = new MutableLiveData<Restaurant>();
+
 
     public enum RestaurantListLoadingState {
         loading,
@@ -43,66 +46,70 @@ public class RestaurantModel {
 
     public LiveData<List<Restaurant>> getAll() {
         if (restaurantsList.getValue() == null) {
-            refreshRestaurantList();
+//            refreshRestaurantList();
         }
         ;
         return restaurantsList;
     }
 
-    public void refreshRestaurantList() {
-        restaurantListLoadingState.setValue(RestaurantListLoadingState.loading);
+//    public void refreshRestaurantList() {
+//        restaurantListLoadingState.setValue(RestaurantListLoadingState.loading);
+//
+//        // get last local update date
+//        Long lastUpdateDate = WegourmetApplication.getContext().getSharedPreferences("TAG", Context.MODE_PRIVATE).getLong("RestaurantsLastUpdateDate", 0);
+//
+//        executor.execute(() -> {
+//            List<Restaurant> stList = AppLocalDb.db.restaurantDao().getAll();
+//            restaurantsList.postValue(stList);
+//        });
+//
+//        // firebase get all updates since lastLocalUpdateDate
+//        modelFirebase.getAllRestaurants(lastUpdateDate, new RestaurantModelFirebase.GetAllRestaurantsListener() {
+//            @Override
+//            public void onComplete(List<Restaurant> list) {
+//                // add all records to the local db
+//                executor.execute(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        Long lud = new Long(0);
+//                        Log.d("TAG", "fb returned " + list.size());
+//                        for (Restaurant restaurant : list) {
+//                            AppLocalDb.db.restaurantDao().insertAll(restaurant);
+//                            if (lud < restaurant.getUpdateDate()) {
+//                                lud = restaurant.getUpdateDate();
+//                            }
+//                        }
+//                        // update last local update date
+//                        WegourmetApplication.getContext()
+//                                .getSharedPreferences("TAG", Context.MODE_PRIVATE)
+//                                .edit()
+//                                .putLong("RestaurantsLastUpdateDate", lud)
+//                                .commit();
+//
+//                        //return all data to caller
+//                        List<Restaurant> stList = AppLocalDb.db.restaurantDao().getAll();
+//                        restaurantsList.postValue(stList);
+//                        restaurantListLoadingState.postValue(RestaurantListLoadingState.loaded);
+//                    }
+//                });
+//            }
+//        });
+//    }
 
-        // get last local update date
-        Long lastUpdateDate = WegourmetApplication.getContext().getSharedPreferences("TAG", Context.MODE_PRIVATE).getLong("RestaurantsLastUpdateDate", 0);
 
-        executor.execute(() -> {
-            List<Restaurant> stList = AppLocalDb.db.restaurantDao().getAll();
-            restaurantsList.postValue(stList);
-        });
-
-        // firebase get all updates since lastLocalUpdateDate
-        modelFirebase.getAllRestaurants(lastUpdateDate, new RestaurantModelFirebase.GetAllRestaurantsListener() {
+    public void addRestaurant(Restaurant restaurant, OnSuccessListener listener) {
+        modelFirebase.addRestaurant(restaurant, new OnSuccessListener() {
             @Override
-            public void onComplete(List<Restaurant> list) {
-                // add all records to the local db
-                executor.execute(new Runnable() {
-                    @Override
-                    public void run() {
-                        Long lud = new Long(0);
-                        Log.d("TAG", "fb returned " + list.size());
-                        for (Restaurant restaurant : list) {
-                            AppLocalDb.db.restaurantDao().insertAll(restaurant);
-                            if (lud < restaurant.getUpdateDate()) {
-                                lud = restaurant.getUpdateDate();
-                            }
-                        }
-                        // update last local update date
-                        WegourmetApplication.getContext()
-                                .getSharedPreferences("TAG", Context.MODE_PRIVATE)
-                                .edit()
-                                .putLong("RestaurantsLastUpdateDate", lud)
-                                .commit();
-
-                        //return all data to caller
-                        List<Restaurant> stList = AppLocalDb.db.restaurantDao().getAll();
-                        restaurantsList.postValue(stList);
-                        restaurantListLoadingState.postValue(RestaurantListLoadingState.loaded);
-                    }
+            public void onSuccess(Object o) {
+                executor.execute(() -> {
+                    AppLocalDb.db.restaurantDao().insert(restaurant);
+                    restaurant.postValue(newRestaurant);
+                    listener.onSuccess(o);
                 });
             }
-        });
-    }
-
-
-    public interface AddRestaurantListener {
-        void onComplete();
-    }
-
-    public void addRestaurant(Restaurant restaurant, AddRestaurantListener listener) {
-        modelFirebase.addRestaurant(restaurant, () -> {
-            listener.onComplete();
-            refreshRestaurantList();
-        });
+        }, failureListener);
+//            listener.onSuccess();
+//            refreshRestaurantList();
     }
 
     public interface GetRestaurantById {
