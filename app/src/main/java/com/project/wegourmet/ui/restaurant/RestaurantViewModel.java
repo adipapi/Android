@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.project.wegourmet.Repository.model.PostModel;
@@ -21,6 +22,10 @@ public class RestaurantViewModel extends ViewModel {
 
     public void addRestaurant(Restaurant restaurant, Runnable success) {
         RestaurantModel.instance.addRestaurant(restaurant, success);
+    }
+
+    public void getRestaurantById(String restId, RestaurantModel.GetRestaurantById success) {
+        RestaurantModel.instance.getRestaurantById(restId, success);
     }
 
     public void deleteRestaurantPost(Post post, Integer pos, Runnable success) {

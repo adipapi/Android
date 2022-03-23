@@ -181,6 +181,19 @@
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
+    <ImageButton
+        android:id="@+id/view_in_map"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="116dp"
+        android:backgroundTint="@color/black"
+        android:src="@android:drawable/ic_dialog_map"
+        app:layout_constraintBottom_toTopOf="@+id/restaurantlist_swiperefresh"
+        app:layout_constraintEnd_toStartOf="@+id/guideline5"
+        app:layout_constraintHorizontal_bias="0.269"
+        app:layout_constraintStart_toEndOf="@+id/button2"
+        app:layout_constraintTop_toBottomOf="@+id/chip4" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
 
 

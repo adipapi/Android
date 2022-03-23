@@ -1,9 +1,11 @@
 package com.project.wegourmet.ui.home;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -12,7 +14,9 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.project.wegourmet.MapActivity;
 import com.project.wegourmet.R;
+import com.project.wegourmet.UnsignedActivity;
 import com.project.wegourmet.databinding.FragmentHomeBinding;
 import com.project.wegourmet.model.Restaurant;
 import com.project.wegourmet.ui.restaurant.RestaurantListRvFragment;
@@ -26,6 +30,7 @@ private FragmentHomeBinding binding;
     private List<Restaurant> restaurants;
     RestaurantAdapter adapter;
     RecyclerView restaurantsRv;
+    ImageButton mapViewBtn;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
             ViewGroup container, Bundle savedInstanceState) {
@@ -47,7 +52,7 @@ private FragmentHomeBinding binding;
             @Override
             public void onItemClick(View v,int position) {
                 String rsId = homeViewModel.restaurants.getValue().get(position).getId();
-                Navigation.findNavController(v).navigate(HomeFragmentDirections.actionNavigationHomeToNavigationRestaurantDetails(rsId));
+                Navigation.findNavController(v).navigate(HomeFragmentDirections.actionNavigationHomeToNavigationRestaurant("VIEW",rsId));
             }
         });
 
@@ -58,8 +63,15 @@ private FragmentHomeBinding binding;
             adapter.notifyDataSetChanged();
         });
 
-//        final TextView textView = binding.textHome;
-//        homeViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
+        mapViewBtn = root.findViewById(R.id.view_in_map);
+
+        mapViewBtn.setOnClickListener(v -> {
+            Intent intent = new Intent(getContext(), MapActivity.class);
+            startActivity(intent);
+            getActivity().finish();
+        });
+
+
         return root;
     }
 

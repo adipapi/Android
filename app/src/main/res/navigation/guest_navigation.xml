@@ -11,8 +11,8 @@
         android:label="@string/title_home"
         tools:layout="@layout/fragment_home" >
         <action
-            android:id="@+id/action_navigation_home_to_navigation_restaurant_details"
-            app:destination="@id/navigation_restaurant_details" />
+            android:id="@+id/action_navigation_home_to_navigation_restaurant"
+            app:destination="@id/navigation_restaurant" />
     </fragment>
     <fragment
         android:id="@+id/navigation_history"
@@ -30,10 +30,31 @@
         android:label="@string/title_profile"
         tools:layout="@layout/fragment_profile" />
     <fragment
-        android:id="@+id/navigation_restaurant_details"
-        android:name="com.project.wegourmet.ui.restaurant.RestaurantDetailsFragment"
+        android:id="@+id/navigation_restaurant"
+        android:name="com.project.wegourmet.ui.restaurant.RestaurantFragment"
         android:label="@string/title_restaurant"
-        tools:layout="@layout/fragment_restaurant_details">
+        tools:layout="@layout/fragment_restaurant" >
+        <action
+            android:id="@+id/action_navigation_restaurant_to_navigation_post"
+            app:destination="@id/navigation_post" />
+        <argument
+            android:name="restaurantMode"
+            app:argType="string" />
+        <argument
+            android:name="restaurantId"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/navigation_post"
+        android:name="com.project.wegourmet.ui.restaurant.PostFragment"
+        android:label="@string/title_restaurant"
+        tools:layout="@layout/fragment_post">
+        <argument
+            android:name="postId"
+            app:argType="string" />
+        <argument
+            android:name="postMode"
+            app:argType="string" />
         <argument
             android:name="restaurantName"
             app:argType="string" />

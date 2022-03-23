@@ -29,6 +29,7 @@ import com.project.wegourmet.Repository.model.RestaurantModel;
 import com.project.wegourmet.databinding.FragmentRestaurantBinding;
 import com.project.wegourmet.model.Post;
 import com.project.wegourmet.model.Restaurant;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -59,7 +60,7 @@ public class RestaurantFragment extends Fragment {
         View root = binding.getRoot();
 
         String restaurantMode = RestaurantFragmentArgs.fromBundle(getArguments()).getRestaurantMode();
-        String restaurantName = RestaurantFragmentArgs.fromBundle(getArguments()).getRestaurantName();
+        String restaurantName = RestaurantFragmentArgs.fromBundle(getArguments()).getRestaurantId();
 
         saveButton = root.findViewById(R.id.save_restaurant_btn);
         name = root.findViewById(R.id.restaurant_name);
@@ -68,8 +69,25 @@ public class RestaurantFragment extends Fragment {
         restaurantType = root.findViewById(R.id.restaurant_type);
         restaurantImage = root.findViewById(R.id.restaurant_image);
         camBtn = root.findViewById(R.id.restaurant_cam_btn);
-        description = root.findViewById(R.id.description);
+        galleryBtn = root.findViewById(R.id.restaurant_gallery_btn);
+        description = root.findViewById(R.id.restaurant_description);
         addPostBtn = (FloatingActionButton) root.findViewById(R.id.restaurant_add_post);
+
+        if(restaurantMode == "VIEW") {
+            name.setClickable(false);
+            name.setFocusable(false);
+            address.setClickable(false);
+            address.setFocusable(false);
+            phone.setClickable(false);
+            phone.setFocusable(false);
+            restaurantType.setClickable(false);
+            restaurantType.setFocusable(false);
+            description.setFocusable(false);
+            description.setFocusable(false);
+            camBtn.setVisibility(View.INVISIBLE);
+            galleryBtn.setVisibility(View.INVISIBLE);
+            saveButton.setVisibility(View.INVISIBLE);
+        }
 
         if(restaurantMode != "EDIT") {
             addPostBtn.hide();
@@ -109,6 +127,18 @@ public class RestaurantFragment extends Fragment {
         // TODO : ask if there is a input of restaurant name, if so than select posts, if not
         // We are in new restaurant mode, we dont have any posts.
         if(!restaurantName.isEmpty()) {
+            restaurantViewModel.getRestaurantById(restaurantName, (rest -> {
+                name.setText(rest.getName());
+                address.setText(rest.getAddress());
+                phone.setText(rest.getPhone());
+                restaurantType.setText(rest.getType());
+                description.setText(rest.getDescription());
+                if (rest.getMainImageUrl() != null && !rest.getMainImageUrl().isEmpty()) {
+                    Picasso.get()
+                            .load(rest.getMainImageUrl())
+                            .into(restaurantImage);
+                }
+            }));
             restaurantViewModel.getPostsByRestaurant(restaurantName);
             restaurantViewModel.posts.observe(getViewLifecycleOwner(), (postsByRestaurants) -> {
                 posts = postsByRestaurants;
@@ -131,7 +161,7 @@ public class RestaurantFragment extends Fragment {
             public void onClick(View view) {
                 Restaurant restaurant = new Restaurant(FirebaseAuth.getInstance().getCurrentUser().getUid(),
                         name.getText().toString(), address.getText().toString(), phone.getText().toString(),
-                        restaurantType.getText().toString(), description.getText().toString());
+                        restaurantType.getText().toString(), description.getText().toString(), 31.12, 32.12);
                 if (imageBitmap == null) {
                     restaurantViewModel.addRestaurant(restaurant, () -> {
                         Toast.makeText(getActivity().getApplicationContext(), "Saved successfully",Toast.LENGTH_SHORT).show();

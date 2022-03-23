@@ -46,7 +46,7 @@
         app:layout_constraintVertical_bias="0.033" />
 
     <ImageButton
-        android:id="@+id/post_gallery_btn"
+        android:id="@+id/restaurant_gallery_btn"
         android:layout_width="46dp"
         android:layout_height="44dp"
         android:src="@android:drawable/ic_menu_gallery"

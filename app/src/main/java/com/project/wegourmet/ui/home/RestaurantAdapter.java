@@ -81,7 +81,7 @@ class RestaurantViewHolder extends RecyclerView.ViewHolder{
     void bind(Restaurant restaurant){
         name.setText(restaurant.getName());
         address.setText(restaurant.getId());
-        if (restaurant.getMainImageUrl() != null) {
+        if (restaurant.getMainImageUrl() != null && !restaurant.getMainImageUrl().isEmpty()) {
             Picasso.get()
                     .load(restaurant.getMainImageUrl())
                     .into(profilePicture);

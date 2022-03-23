@@ -23,18 +23,38 @@ public class Restaurant {
     String type="";
     String mainImageUrl="";
     String description="";
+    Double location_x;
+    Double location_y;
     Long updateDate= new Long(0);
 
     public Restaurant(){}
 
     public Restaurant(String hostId, String name, String address, String phone,
-                      String type, String description) {
+                      String type, String description, Double location_x, Double location_y) {
         this.hostId = hostId;
         this.name = name;
         this.address = address;
         this.phone = phone;
         this.type = type;
         this.description = description;
+        this.location_x = location_x;
+        this.location_y = location_y;
+    }
+
+    public Double getLocation_x() {
+        return location_x;
+    }
+
+    public void setLocation_x(Double location_x) {
+        this.location_x = location_x;
+    }
+
+    public Double getLocation_y() {
+        return location_y;
+    }
+
+    public void setLocation_y(Double location_y) {
+        this.location_y = location_y;
     }
 
     public String getId() {
@@ -131,11 +151,13 @@ public class Restaurant {
         String phone = (String) json.get("phone");
         String type = (String) json.get("type");
         String description = (String) json.get("description");
+        Double locationX = (Double) json.get("location_x");
+        Double locationY = (Double) json.get("location_y");
         String mainImageUrl = (String) json.get("mainImageUrl");
-        Timestamp ts = (Timestamp)json.get("updateDate");
+//        Timestamp ts = (Timestamp)json.get("updateDate");
 //        Long updateDate = ts.getSeconds();
 
-        Restaurant restaurant = new Restaurant(hostId,name,address,phone,type,description);
+        Restaurant restaurant = new Restaurant(hostId,name,address,phone,type,description,locationX,locationY);
         restaurant.setId(id);
 //        restaurant.setUpdateDate(updateDate);
         restaurant.setMainImageUrl(mainImageUrl);

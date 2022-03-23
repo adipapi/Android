@@ -12,7 +12,7 @@ import com.project.wegourmet.model.Post;
 import com.project.wegourmet.model.Restaurant;
 import com.project.wegourmet.model.User;
 
-@Database(entities = {User.class, Restaurant.class, Post.class}, version = 9)
+@Database(entities = {User.class, Restaurant.class, Post.class}, version = 14)
 abstract class AppLocalDbRepository extends RoomDatabase {
     public abstract UserDao userDao();
     public abstract RestaurantDao restaurantDao();

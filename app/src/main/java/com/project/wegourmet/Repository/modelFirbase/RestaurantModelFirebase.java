@@ -78,7 +78,7 @@ public class RestaurantModelFirebase {
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                         Restaurant restaurant = null;
-                        if (task.isSuccessful() & task.getResult()!= null){
+                        if (task.isSuccessful() & task.getResult()!= null && task.getResult().getData() != null){
                             restaurant = Restaurant.create(task.getResult().getData());
                         }
                         listener.onComplete(restaurant);
@@ -86,6 +86,23 @@ public class RestaurantModelFirebase {
                 });
 
     }
+
+//    public void getRestaurantByName(String restaurantName, OnSuccessListener listener) {
+//        db.collection(Restaurant.COLLECTION_NAME)
+//                .document(restaurantId)
+//                .get()
+//                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+//                        Restaurant restaurant = null;
+//                        if (task.isSuccessful() & task.getResult()!= null){
+//                            restaurant = Restaurant.create(task.getResult().getData());
+//                        }
+//                        listener.onComplete(restaurant);
+//                    }
+//                });
+//
+//    }
 
 
     public void saveImage(Bitmap imageBitmap, String imageName, RestaurantModel.SaveImageListener listener) {

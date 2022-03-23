@@ -46,13 +46,13 @@ public class RestaurantModel {
     MutableLiveData<List<Restaurant>> restaurantsList = new MutableLiveData<List<Restaurant>>();
 
     public MutableLiveData<List<Restaurant>> getAll() {
-        executor.execute(() -> {
-            List<Restaurant> rests = AppLocalDb.db.restaurantDao().getAll();
-
-            if(rests != null) {
-                restaurantsList.postValue(rests);
-            }
-        });
+//        executor.execute(() -> {
+//            List<Restaurant> rests = AppLocalDb.db.restaurantDao().getAll();
+//
+//            if(rests != null) {
+//                restaurantsList.postValue(rests);
+//            }
+//        });
 
         modelFirebase.getAllRestaurants((fbRestaurants) -> {
             executor.execute(() -> {
@@ -135,6 +135,11 @@ public class RestaurantModel {
         modelFirebase.getRestaurantById(restaurantId, listener);
         return null;
     }
+
+//    public Restaurant getRestaurantByName(String restaurantName, OnSU listener) {
+//        modelFirebase.getRestaurantById(restaurantId, listener);
+//        return null;
+//    }
 
 
     public interface SaveImageListener {

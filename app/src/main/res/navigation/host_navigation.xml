@@ -27,7 +27,7 @@
             android:name="restaurantMode"
             app:argType="string" />
         <argument
-            android:name="restaurantName"
+            android:name="restaurantId"
             app:argType="string" />
     </fragment>
 
