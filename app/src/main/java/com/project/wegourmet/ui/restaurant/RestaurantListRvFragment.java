@@ -43,25 +43,24 @@ public class RestaurantListRvFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home,container,false);
 
-        swipeRefresh = view.findViewById(R.id.restaurantlist_swiperefresh);
-        swipeRefresh.setOnRefreshListener(() -> RestaurantModel.instance.refreshRestaurantList());
+//        swipeRefresh = view.findViewById(R.id.restaurantlist_swiperefresh);
+//        swipeRefresh.setOnRefreshListener(() -> RestaurantModel.instance.refreshRestaurantList());
 
         RecyclerView list = view.findViewById(R.id.restaurantlist_rv);
         list.setHasFixedSize(true);
 
-//        list.setLayoutManager(new LinearLayoutManager(getContext()));
+        list.setLayoutManager(new LinearLayoutManager(container.getContext()));
 
         adapter = new MyAdapter();
         list.setAdapter(adapter);
 
-        adapter.setOnItemClickListener(new OnItemClickListener() {
-            @Override
-            public void onItemClick(View v,int position) {
-                String rsId = viewModel.getData().getValue().get(position).getId();
-                Navigation.findNavController(v).navigate(HomeFragmentDirections.actionNavigationHomeToNavigationRestaurantDetails(rsId));
-
-            }
-        });
+//        adapter.setOnItemClickListener(new OnItemClickListener() {
+//            @Override
+//            public void onItemClick(View v,int position) {
+//                String rsId = viewModel.getData().getValue().get(position).getId();
+//                Navigation.findNavController(v).navigate(HomeFragmentDirections.actionNavigationHomeToNavigationRestaurantDetails(rsId));
+//            }
+//        });
 
 //        setHasOptionsMenu(true);
 //        viewModel.getData().observe(getViewLifecycleOwner(), list1 -> refresh());
@@ -147,6 +146,7 @@ public class RestaurantListRvFragment {
             return viewModel.getData().getValue().size();
         }
     }
+
 
 //    @Override
 //    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {

@@ -33,29 +33,28 @@ public class RestaurantModelFirebase {
     FirebaseStorage storage = FirebaseStorage.getInstance();
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-    public RestaurantModelFirebase(){
-        FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
-                .setPersistenceEnabled(false)
-                .build();
-        db.setFirestoreSettings(settings);
-    }
+//    public RestaurantModelFirebase(){
+//        FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
+//                .setPersistenceEnabled(false)
+//                .build();
+//        db.setFirestoreSettings(settings);
+//    }
 
     public interface GetAllRestaurantsListener{
         void onComplete(List<Restaurant> list);
     }
 
     // Methods
-    public void addRestaurant(Restaurant restaurant, OnFailureListener failureListener, OnSuccessListener successListener) {
+    public void addRestaurant(Restaurant restaurant,OnSuccessListener successListener) {
         DocumentReference ref = db.collection(COLLECTION_NAME).document();
         restaurant.setId(ref.getId());
         ref.set(restaurant)
-                .addOnSuccessListener(successListener)
-                .addOnFailureListener(failureListener);
+                .addOnSuccessListener(successListener);
     }
 
-    public void getAllRestaurants(Long lastUpdateDate, RestaurantModelFirebase.GetAllRestaurantsListener listener) {
+    public void getAllRestaurants(RestaurantModelFirebase.GetAllRestaurantsListener listener) {
         db.collection(Restaurant.COLLECTION_NAME)
-                .whereGreaterThanOrEqualTo("updateDate",new Timestamp(lastUpdateDate,0))
+//                .whereGreaterThanOrEqualTo("updateDate",new Timestamp(lastUpdateDate,0))
                 .get()
                 .addOnCompleteListener(task -> {
                     List<Restaurant> list = new LinkedList<Restaurant>();
@@ -108,13 +107,6 @@ public class RestaurantModelFirebase {
                         });
                     }
                 });
-    }
-
-    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
-
-    public boolean isSignedIn(){
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        return (currentUser != null);
     }
 }
 

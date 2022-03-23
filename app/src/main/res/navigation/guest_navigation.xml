@@ -32,8 +32,8 @@
     <fragment
         android:id="@+id/navigation_restaurant_details"
         android:name="com.project.wegourmet.ui.restaurant.RestaurantDetailsFragment"
-        android:label="@string/title_profile"
-        tools:layout="@layout/fragment_profile">
+        android:label="@string/title_restaurant"
+        tools:layout="@layout/fragment_restaurant_details">
         <argument
             android:name="restaurantName"
             app:argType="string" />

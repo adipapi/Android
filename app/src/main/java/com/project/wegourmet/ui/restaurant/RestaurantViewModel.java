@@ -19,8 +19,8 @@ public class RestaurantViewModel extends ViewModel {
 
     public RestaurantViewModel() {}
 
-    public void addRestaurant(Restaurant restaurant, OnSuccessListener successListener) {
-        RestaurantModel.instance.addRestaurant(restaurant, successListener);
+    public void addRestaurant(Restaurant restaurant, Runnable success) {
+        RestaurantModel.instance.addRestaurant(restaurant, success);
     }
 
     public void deleteRestaurantPost(Post post, Integer pos, Runnable success) {

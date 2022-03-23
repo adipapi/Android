@@ -1,7 +1,6 @@
 package com.project.wegourmet.ui.restaurant;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -13,30 +12,23 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.project.wegourmet.R;
-import com.project.wegourmet.Repository.model.PostModel;
 import com.project.wegourmet.Repository.model.RestaurantModel;
-import com.project.wegourmet.Repository.model.UserModel;
 import com.project.wegourmet.databinding.FragmentRestaurantBinding;
 import com.project.wegourmet.model.Post;
 import com.project.wegourmet.model.Restaurant;
-import com.project.wegourmet.ui.myRestaurants.MyRestaurantFragmentDirections;
 
 import java.util.List;
 
@@ -91,7 +83,7 @@ public class RestaurantFragment extends Fragment {
         adapter = new PostAdapter(posts);
         postsRv.setAdapter(adapter);
 
-        adapter.setOnEditClickListener(new OnItemClickListener() {
+        adapter.setOnEditClickListener(new OnPostClickListener() {
             @Override
             public void onItemClick(View v,int position) {
                 String postId = posts.get(position).getId();
@@ -101,7 +93,7 @@ public class RestaurantFragment extends Fragment {
             }
         });
 
-        adapter.setOnDeleteClickListener(new OnItemClickListener() {
+        adapter.setOnDeleteClickListener(new OnPostClickListener() {
             @Override
             public void onItemClick(View v,int position) {
                 restaurantViewModel.deleteRestaurantPost(posts.get(position), position, () -> {
@@ -141,14 +133,14 @@ public class RestaurantFragment extends Fragment {
                         name.getText().toString(), address.getText().toString(), phone.getText().toString(),
                         restaurantType.getText().toString(), description.getText().toString());
                 if (imageBitmap == null) {
-                    restaurantViewModel.addRestaurant(restaurant, (e) -> {
+                    restaurantViewModel.addRestaurant(restaurant, () -> {
                         Toast.makeText(getActivity().getApplicationContext(), "Saved successfully",Toast.LENGTH_SHORT).show();
                     });
                 } else {
                     RestaurantModel.instance.saveImage(imageBitmap, restaurant.getHostId() +
                             restaurant.getName() + ".jpg", url -> {
                         restaurant.setMainImageUrl(url);
-                        restaurantViewModel.addRestaurant(restaurant, (e) -> {
+                        restaurantViewModel.addRestaurant(restaurant, () -> {
                             Toast.makeText(getActivity().getApplicationContext(), "Saved data successfully!",Toast.LENGTH_SHORT).show();
                         });
                     });

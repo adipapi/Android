@@ -6,6 +6,7 @@ import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 
 
+import com.project.wegourmet.model.Post;
 import com.project.wegourmet.model.Restaurant;
 
 import java.util.List;
@@ -19,5 +20,8 @@ public interface RestaurantDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(Restaurant restaurant);
 
-    void insertAll(Restaurant restaurant);
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    void insertMany(List<Restaurant> restaurants);
+
+//    void insertAll(Restaurant restaurant);
 }

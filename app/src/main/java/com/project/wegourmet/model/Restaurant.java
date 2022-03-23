@@ -10,15 +10,13 @@ import com.google.firebase.firestore.FieldValue;
 import java.util.HashMap;
 import java.util.Map;
 
-@Entity(tableName = "restaurants", primaryKeys = {"hostId", "name"})
+@Entity(tableName = "restaurants")
 public class Restaurant {
     final public static String COLLECTION_NAME = "restaurants";
     @PrimaryKey
     @NonNull
     String id = "";
-    @NonNull
     String hostId ="";
-    @NonNull
     String name="";
     String address="";
     String phone="";
@@ -135,11 +133,11 @@ public class Restaurant {
         String description = (String) json.get("description");
         String mainImageUrl = (String) json.get("mainImageUrl");
         Timestamp ts = (Timestamp)json.get("updateDate");
-        Long updateDate = ts.getSeconds();
+//        Long updateDate = ts.getSeconds();
 
         Restaurant restaurant = new Restaurant(hostId,name,address,phone,type,description);
         restaurant.setId(id);
-        restaurant.setUpdateDate(updateDate);
+//        restaurant.setUpdateDate(updateDate);
         restaurant.setMainImageUrl(mainImageUrl);
         return restaurant;
 

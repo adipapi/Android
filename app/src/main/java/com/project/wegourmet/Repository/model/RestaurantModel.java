@@ -13,6 +13,7 @@ import androidx.lifecycle.MutableLiveData;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.project.wegourmet.Repository.modelFirbase.RestaurantModelFirebase;
 import com.project.wegourmet.WegourmetApplication;
+import com.project.wegourmet.model.Post;
 import com.project.wegourmet.model.Restaurant;
 
 import java.util.List;
@@ -38,13 +39,27 @@ public class RestaurantModel {
         return restaurantListLoadingState;
     }
 
-    private RestaurantModel() {
-        restaurantListLoadingState.setValue(RestaurantListLoadingState.loaded);
-    }
+//    private RestaurantModel() {
+//        restaurantListLoadingState.setValue(RestaurantListLoadingState.loaded);
+//    }
 
     MutableLiveData<List<Restaurant>> restaurantsList = new MutableLiveData<List<Restaurant>>();
 
-    public LiveData<List<Restaurant>> getAll() {
+    public MutableLiveData<List<Restaurant>> getAll() {
+        executor.execute(() -> {
+            List<Restaurant> rests = AppLocalDb.db.restaurantDao().getAll();
+
+            if(rests != null) {
+                restaurantsList.postValue(rests);
+            }
+        });
+
+        modelFirebase.getAllRestaurants((fbRestaurants) -> {
+            executor.execute(() -> {
+                AppLocalDb.db.restaurantDao().insertMany((List<Restaurant>) fbRestaurants);
+                restaurantsList.postValue((List<Restaurant>) fbRestaurants);
+            });
+        });
         if (restaurantsList.getValue() == null) {
 //            refreshRestaurantList();
         }
@@ -97,17 +112,17 @@ public class RestaurantModel {
 //    }
 
 
-    public void addRestaurant(Restaurant restaurant, OnSuccessListener listener) {
-        modelFirebase.addRestaurant(restaurant, new OnSuccessListener() {
+    public void addRestaurant(Restaurant addedRestaurant, Runnable success) {
+        modelFirebase.addRestaurant(addedRestaurant, new OnSuccessListener() {
             @Override
             public void onSuccess(Object o) {
                 executor.execute(() -> {
-                    AppLocalDb.db.restaurantDao().insert(restaurant);
-                    restaurant.postValue(newRestaurant);
-                    listener.onSuccess(o);
+                    AppLocalDb.db.restaurantDao().insert(addedRestaurant);
+                    restaurant.postValue(addedRestaurant);
+                    success.run();
                 });
             }
-        }, failureListener);
+        });
 //            listener.onSuccess();
 //            refreshRestaurantList();
     }
@@ -128,14 +143,6 @@ public class RestaurantModel {
 
     public void saveImage(Bitmap imageBitmap, String imageName, SaveImageListener listener) {
         modelFirebase.saveImage(imageBitmap, imageName, listener);
-    }
-
-    /**
-     * Authentication
-     */
-
-    public boolean isSignedIn() {
-        return modelFirebase.isSignedIn();
     }
 
 //    // Methods

@@ -1,6 +1,5 @@
 package com.project.wegourmet.ui.restaurant;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,13 +18,13 @@ import java.util.List;
 public class PostAdapter extends RecyclerView.Adapter<ViewHolder>{
 
     public List<Post> posts;
-    OnItemClickListener editListener;
-    OnItemClickListener deleteListener;
+    OnPostClickListener editListener;
+    OnPostClickListener deleteListener;
 
-    public void setOnEditClickListener(OnItemClickListener listener){
+    public void setOnEditClickListener(OnPostClickListener listener){
         this.editListener = listener;
     }
-    public void setOnDeleteClickListener(OnItemClickListener listener){
+    public void setOnDeleteClickListener(OnPostClickListener listener){
         this.deleteListener = listener;
     }
 
@@ -57,7 +56,7 @@ public class PostAdapter extends RecyclerView.Adapter<ViewHolder>{
     }
 }
 
-interface OnItemClickListener{
+interface OnPostClickListener{
     void onItemClick(View v,int position);
 }
 
@@ -67,7 +66,7 @@ class ViewHolder extends RecyclerView.ViewHolder{
     ImageButton editBtn;
     ImageButton deleteBtn;
 
-    ViewHolder(View itemView, OnItemClickListener editListener, OnItemClickListener deleteListener) {
+    public ViewHolder(View itemView, OnPostClickListener editListener, OnPostClickListener deleteListener) {
         super(itemView);
         postImage = itemView.findViewById(R.id.post_in_list);
         editBtn = itemView.findViewById(R.id.edit_post_btn);
