@@ -4,91 +4,68 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.profile.ProfileFragment">
-
-    <Button
-        android:id="@+id/profile_logout_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Logout"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.739"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/usernameProfile" />
+    tools:context=".ui.restaurant.PostFragment">
 
     <ImageView
-        android:id="@+id/profileImage"
-        android:layout_width="263dp"
-        android:layout_height="225dp"
+        android:id="@+id/post_image"
+        android:layout_width="315dp"
+        android:layout_height="276dp"
+        android:background="@color/browser_actions_bg_grey"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.108"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.116"
+        app:layout_constraintVertical_bias="0.094"
         tools:src="@tools:sample/avatars" />
 
     <ImageButton
-        android:id="@+id/main_cam_btn"
+        android:id="@+id/post_cam_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@android:drawable/ic_menu_camera"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.631"
-        app:layout_constraintStart_toEndOf="@+id/profileImage"
+        app:layout_constraintStart_toEndOf="@+id/post_image"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.13" />
 
     <ImageButton
-        android:id="@+id/main_gallery_btn"
+        android:id="@+id/post_gallery_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@android:drawable/ic_menu_gallery"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.631"
-        app:layout_constraintStart_toEndOf="@+id/profileImage"
-        app:layout_constraintTop_toBottomOf="@+id/main_cam_btn"
-        app:layout_constraintVertical_bias="0.121" />
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/post_image"
+        app:layout_constraintTop_toBottomOf="@+id/post_cam_btn"
+        app:layout_constraintVertical_bias="0.118" />
 
     <EditText
-        android:id="@+id/usernameProfile"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/post_text"
+        android:layout_width="375dp"
+        android:layout_height="189dp"
         android:ems="10"
         android:inputType="textPersonName"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.736"
+        app:layout_constraintHorizontal_bias="0.555"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/profileImage"
-        app:layout_constraintVertical_bias="0.283" />
-
-    <TextView
-        android:id="@+id/textView6"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="username"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/usernameProfile"
-        app:layout_constraintHorizontal_bias="0.653"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/profileImage"
-        app:layout_constraintVertical_bias="0.296" />
+        app:layout_constraintTop_toBottomOf="@+id/post_image"
+        app:layout_constraintVertical_bias="0.183" />
 
     <Button
-        android:id="@+id/saveProfileBtn"
+        android:id="@+id/savePostBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Save"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.3"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/usernameProfile" />
+        app:layout_constraintTop_toBottomOf="@+id/post_text"
+        app:layout_constraintVertical_bias="0.579" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline4"
