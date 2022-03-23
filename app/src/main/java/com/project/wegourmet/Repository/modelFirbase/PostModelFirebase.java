@@ -45,9 +45,9 @@ public class PostModelFirebase {
                 });
     }
 
-    public void getPostByRestaurant(String restaurantName,OnSuccessListener successListener) {
+    public void getPostByRestaurant(String restaurantId,OnSuccessListener successListener) {
         db.collection(COLLECTION_NAME)
-                .whereEqualTo("restaurantName", restaurantName)
+                .whereEqualTo("restaurantId", restaurantId)
                 .whereEqualTo("deleted", false)
                 .get()
                 .addOnSuccessListener((querySnapshot) -> {

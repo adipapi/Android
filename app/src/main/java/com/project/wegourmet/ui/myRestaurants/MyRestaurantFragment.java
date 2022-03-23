@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -15,7 +16,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firestore.v1.FirestoreGrpc;
 import com.project.wegourmet.R;
+import com.project.wegourmet.Repository.model.UserModel;
 import com.project.wegourmet.databinding.FragmentMyRestaurantsBinding;
 import com.project.wegourmet.model.Restaurant;
 import com.project.wegourmet.ui.home.HomeFragmentDirections;
@@ -28,6 +31,7 @@ public class MyRestaurantFragment extends Fragment {
     private List<Restaurant> restaurants;
     private FragmentMyRestaurantsBinding binding;
     private ImageButton addRestaurantBtn;
+    ImageButton deleteBtn;
     RestaurantAdapter adapter;
     RecyclerView restaurantsRv;
 
@@ -49,9 +53,20 @@ public class MyRestaurantFragment extends Fragment {
 
         adapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
-            public void onItemClick(View v,int position) {
+            public void onItemClick(View v, int position) {
                 String rsId = myRestaurantsViewModel.restaurants.getValue().get(position).getId();
-                Navigation.findNavController(v).navigate(MyRestaurantFragmentDirections.actionNavigationMyRestaurantsToNavigationRestaurant("EDIT",rsId));
+                Navigation.findNavController(v).navigate(MyRestaurantFragmentDirections.actionNavigationMyRestaurantsToNavigationRestaurant("EDIT", rsId));
+            }
+        }, new OnItemClickListener() {
+            @Override
+            public void onItemClick(View v, int position) {
+                myRestaurantsViewModel.deleteRestaurant(restaurants.get(position), position, () -> {
+                    Toast.makeText(getActivity().getApplicationContext(), "Saved successfully",Toast.LENGTH_SHORT).show();
+                });
+                myRestaurantsViewModel.restaurants.observe(getViewLifecycleOwner(), (updatedRests) -> {
+                    adapter.restaurants = updatedRests;
+                    adapter.notifyDataSetChanged();
+                });
             }
         });
 

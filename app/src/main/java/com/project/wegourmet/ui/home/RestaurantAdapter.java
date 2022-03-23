@@ -3,6 +3,7 @@ package com.project.wegourmet.ui.home;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -20,9 +21,11 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantViewHolder
 
     public List<Restaurant> restaurants;
     OnItemClickListener listener;
+    OnItemClickListener deleteListener;
 
-    public void setOnItemClickListener(OnItemClickListener listener){
+    public void setOnItemClickListener(OnItemClickListener listener, OnItemClickListener deleteListener){
         this.listener = listener;
+        this.deleteListener = deleteListener;
     }
 
     // data is passed into the constructor
@@ -34,7 +37,7 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantViewHolder
     @Override
     public RestaurantViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item,parent,false);
-        RestaurantViewHolder holder = new RestaurantViewHolder(view,listener);
+        RestaurantViewHolder holder = new RestaurantViewHolder(view,listener, deleteListener);
         return holder;
     }
 
@@ -58,12 +61,14 @@ class RestaurantViewHolder extends RecyclerView.ViewHolder{
     ImageView profilePicture;
     TextView name;
     TextView address;
+    ImageButton deleteBtn;
 
-    public RestaurantViewHolder(@NonNull View itemView, OnItemClickListener listener) {
+    public RestaurantViewHolder(@NonNull View itemView, OnItemClickListener listener, OnItemClickListener deleteListener) {
         super(itemView);
         name = itemView.findViewById(R.id.restaurantName);
         address = itemView.findViewById(R.id.restaurantAddress);
         profilePicture = itemView.findViewById(R.id.restaurantPreviewImage);
+        deleteBtn = itemView.findViewById(R.id.restaurant_delete_btn);
 
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,6 +77,18 @@ class RestaurantViewHolder extends RecyclerView.ViewHolder{
                 listener.onItemClick(v,pos);
             }
         });
+
+        if(deleteListener != null) {
+            deleteBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int pos = getAdapterPosition();
+                    deleteListener.onItemClick(v,pos);
+                }
+            });
+        } else {
+            deleteBtn.setVisibility(View.INVISIBLE);
+        }
     }
 
     void bind(Restaurant restaurant){

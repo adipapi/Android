@@ -13,7 +13,7 @@ public class Post {
     @PrimaryKey
     @NonNull
     String id;
-    String restaurantName;
+    String restaurantId;
     String imageUrl;
     String text;
     Boolean isDeleted;
@@ -21,8 +21,8 @@ public class Post {
 
     public Post(){}
 
-    public Post(String restaurantName, String text, Boolean isDeleted) {
-        this.restaurantName = restaurantName;
+    public Post(String restaurantId, String text, Boolean isDeleted) {
+        this.restaurantId = restaurantId;
         this.text = text;
         this.isDeleted = isDeleted;
     }
@@ -36,12 +36,12 @@ public class Post {
         this.id = id;
     }
 
-    public String getRestaurantName() {
-        return restaurantName;
+    public String getRestaurantId() {
+        return restaurantId;
     }
 
-    public void setRestaurantName(String restaurantName) {
-        this.restaurantName = restaurantName;
+    public void setRestaurantId(String restaurantId) {
+        this.restaurantId = restaurantId;
     }
 
     public String getImageUrl() {
@@ -78,14 +78,14 @@ public class Post {
 
     public static Post create(Map<String, Object> json) {
         String id = (String) json.get("id");
-        String restaurantName = (String) json.get("restaurantName");
+        String restaurantId = (String) json.get("restaurantId");
         String imageUrl = (String) json.get("imageUrl");
         Boolean isDeleted = (Boolean) json.get("deleted");
         String text = (String) json.get("text");
 //        Timestamp ts = (Timestamp)json.get("updateDate");
 //        Long updateDate = ts.getSeconds();
 
-        Post post = new Post(restaurantName, text, isDeleted);
+        Post post = new Post(restaurantId, text, isDeleted);
         post.setId(id);
 //        post.setUpdateDate(updateDate);
         post.setImageUrl(imageUrl);

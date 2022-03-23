@@ -54,7 +54,7 @@ private FragmentHomeBinding binding;
                 String rsId = homeViewModel.restaurants.getValue().get(position).getId();
                 Navigation.findNavController(v).navigate(HomeFragmentDirections.actionNavigationHomeToNavigationRestaurant("VIEW",rsId));
             }
-        });
+        }, null);
 
         homeViewModel.getRestaurants();
         homeViewModel.restaurants.observe(getViewLifecycleOwner(), (rests) -> {

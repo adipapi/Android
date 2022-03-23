@@ -6,6 +6,22 @@
     android:layout_height="match_parent"
     tools:context=".ui.history.HistoryFragment">
 
+    <EditText
+        android:id="@+id/location_y"
+        android:layout_width="114dp"
+        android:layout_height="39dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="64dp"
+        android:ems="10"
+        android:hint="y coordinate"
+        android:inputType="numberDecimal"
+        app:layout_constraintBottom_toTopOf="@+id/restaurant_description"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.941"
+        app:layout_constraintStart_toEndOf="@+id/location_x"
+        app:layout_constraintTop_toBottomOf="@+id/scrollView2"
+        app:layout_constraintVertical_bias="1.0" />
+
     <ImageView
         android:id="@+id/restaurant_image"
         android:layout_width="82dp"
@@ -59,8 +75,8 @@
 
     <EditText
         android:id="@+id/restaurant_type"
-        android:layout_width="181dp"
-        android:layout_height="56dp"
+        android:layout_width="158dp"
+        android:layout_height="44dp"
         android:ems="10"
         android:hint="restaurant type"
         android:inputType="text"
@@ -101,22 +117,22 @@
 
     <EditText
         android:id="@+id/restaurant_description"
-        android:layout_width="160dp"
-        android:layout_height="137dp"
+        android:layout_width="161dp"
+        android:layout_height="101dp"
         android:ems="10"
         android:hint="Description"
         android:inputType="text"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.764"
+        app:layout_constraintHorizontal_bias="0.771"
         app:layout_constraintStart_toEndOf="@+id/restaurant_phone"
         app:layout_constraintTop_toBottomOf="@+id/scrollView2"
-        app:layout_constraintVertical_bias="0.27" />
+        app:layout_constraintVertical_bias="0.428" />
 
     <EditText
         android:id="@+id/restaurant_phone"
-        android:layout_width="181dp"
-        android:layout_height="56dp"
+        android:layout_width="157dp"
+        android:layout_height="49dp"
         android:ems="10"
         android:hint="restaurant phone number"
         android:inputType="phone"
@@ -129,8 +145,8 @@
 
     <EditText
         android:id="@+id/restaurant_address"
-        android:layout_width="181dp"
-        android:layout_height="56dp"
+        android:layout_width="157dp"
+        android:layout_height="51dp"
         android:ems="10"
         android:hint="restaurant address"
         android:inputType="text"
@@ -160,9 +176,22 @@
         app:layout_constraintVertical_bias="0.037">
 
         <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/restaurant_posts_rv"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+            android:id="@+id/restaurant_posts_rv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
     </ScrollView>
+
+    <EditText
+        android:id="@+id/location_x"
+        android:layout_width="106dp"
+        android:layout_height="37dp"
+        android:layout_marginStart="8dp"
+        android:ems="10"
+        android:hint="x coordinate"
+        android:inputType="numberDecimal"
+        app:layout_constraintBottom_toTopOf="@+id/restaurant_description"
+        app:layout_constraintStart_toEndOf="@+id/restaurant_type"
+        app:layout_constraintTop_toBottomOf="@+id/scrollView2"
+        app:layout_constraintVertical_bias="1.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

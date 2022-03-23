@@ -23,14 +23,15 @@ public class Restaurant {
     String type="";
     String mainImageUrl="";
     String description="";
-    Double location_x;
-    Double location_y;
+    Double location_x=31.2;
+    Double location_y=34.15;
+    Boolean isDeleted=false;
     Long updateDate= new Long(0);
 
     public Restaurant(){}
 
     public Restaurant(String hostId, String name, String address, String phone,
-                      String type, String description, Double location_x, Double location_y) {
+                      String type, String description, Double location_x, Double location_y, Boolean isDeleted) {
         this.hostId = hostId;
         this.name = name;
         this.address = address;
@@ -39,6 +40,7 @@ public class Restaurant {
         this.description = description;
         this.location_x = location_x;
         this.location_y = location_y;
+        this.isDeleted = isDeleted;
     }
 
     public Double getLocation_x() {
@@ -47,6 +49,14 @@ public class Restaurant {
 
     public void setLocation_x(Double location_x) {
         this.location_x = location_x;
+    }
+
+    public Boolean getDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        isDeleted = deleted;
     }
 
     public Double getLocation_y() {
@@ -154,10 +164,11 @@ public class Restaurant {
         Double locationX = (Double) json.get("location_x");
         Double locationY = (Double) json.get("location_y");
         String mainImageUrl = (String) json.get("mainImageUrl");
+        Boolean deleted = (Boolean) json.get("deleted");
 //        Timestamp ts = (Timestamp)json.get("updateDate");
 //        Long updateDate = ts.getSeconds();
 
-        Restaurant restaurant = new Restaurant(hostId,name,address,phone,type,description,locationX,locationY);
+        Restaurant restaurant = new Restaurant(hostId,name,address,phone,type,description,locationX,locationY, deleted);
         restaurant.setId(id);
 //        restaurant.setUpdateDate(updateDate);
         restaurant.setMainImageUrl(mainImageUrl);

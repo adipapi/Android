@@ -59,6 +59,7 @@ public class RestaurantModelFirebase {
 
     public void getAllRestaurants(RestaurantModelFirebase.GetAllRestaurantsListener listener) {
         db.collection(Restaurant.COLLECTION_NAME)
+                .whereEqualTo("deleted", false)
 //                .whereGreaterThanOrEqualTo("updateDate",new Timestamp(lastUpdateDate,0))
                 .get()
                 .addOnCompleteListener(task -> {
@@ -78,6 +79,7 @@ public class RestaurantModelFirebase {
     public void getRestaurantsByHost(String hostId, RestaurantModelFirebase.GetAllRestaurantsListener listener) {
         db.collection(Restaurant.COLLECTION_NAME)
                 .whereEqualTo("hostId", hostId )
+                .whereEqualTo("deleted", false)
 //                .whereGreaterThanOrEqualTo("updateDate",new Timestamp(lastUpdateDate,0))
                 .get()
                 .addOnCompleteListener(task -> {

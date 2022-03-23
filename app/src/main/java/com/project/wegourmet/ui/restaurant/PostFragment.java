@@ -110,8 +110,8 @@ public class PostFragment extends Fragment {
                 });
             }
         } else {
-            String restaurantName = PostFragmentArgs.fromBundle(getArguments()).getRestaurantName();
-            Post newPost = new Post(restaurantName, text, false);
+            String restaurantId = PostFragmentArgs.fromBundle(getArguments()).getRestaurantId();
+            Post newPost = new Post(restaurantId, text, false);
             if (imageBitmap == null) {
                 PostModel.instance.addPost(newPost, (e) -> {
                     Toast.makeText(getActivity().getApplicationContext(), "Saved data successfully!",Toast.LENGTH_SHORT).show();

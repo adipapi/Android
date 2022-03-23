@@ -29,16 +29,16 @@ public class PostModel {
 
 
     public MutableLiveData<List<Post>>
-    getPostsByRestaurant(String restaurantName) {
+    getPostsByRestaurant(String restaurantId) {
             executor.execute(() -> {
-                List<Post> postsByRestaurant = AppLocalDb.db.postDao().getPostsByRestaurant(restaurantName);
+                List<Post> postsByRestaurant = AppLocalDb.db.postDao().getPostsByRestaurant(restaurantId);
 
                 if(postsByRestaurant != null) {
                     posts.postValue(postsByRestaurant);
                 }
             });
 
-            modelFirebase.getPostByRestaurant(restaurantName, (fbPostsByRestaurant) -> {
+            modelFirebase.getPostByRestaurant(restaurantId, (fbPostsByRestaurant) -> {
                 executor.execute(() -> {
                     AppLocalDb.db.postDao().insertMany((List<Post>) fbPostsByRestaurant);
                     posts.postValue((List<Post>) fbPostsByRestaurant);

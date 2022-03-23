@@ -39,7 +39,7 @@ public class RestaurantViewModel extends ViewModel {
         });
     }
 
-    public void getPostsByRestaurant(String restaurantName) {
-        posts = PostModel.instance.getPostsByRestaurant(restaurantName);
+    public void getPostsByRestaurant(String restaurantId) {
+        posts = PostModel.instance.getPostsByRestaurant(restaurantId);
     }
 }

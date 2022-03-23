@@ -29,8 +29,8 @@
                 android:tint="@null"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:srcCompat="@drawable/common_google_signin_btn_text_dark"
-                tools:ignore="UseAppTint" />
+                tools:ignore="UseAppTint"
+                tools:srcCompat="@drawable/common_google_signin_btn_text_dark" />
 
             <TextView
                 android:id="@+id/restaurantName"
@@ -52,6 +52,16 @@
                 app:layout_constraintStart_toStartOf="@+id/restaurantName"
                 app:layout_constraintTop_toBottomOf="@+id/restaurantName"
                 tools:text="City Name" />
+
+            <ImageButton
+                android:id="@+id/restaurant_delete_btn"
+                android:layout_width="42dp"
+                android:layout_height="40dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@android:drawable/ic_menu_delete" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.cardview.widget.CardView>
