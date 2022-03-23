@@ -25,9 +25,6 @@ public class MyRestaurantFragment extends Fragment {
         binding = FragmentMyRestaurantsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-//        final TextView textView = binding.textHistory;
-//        historyViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
-
         addRestaurantBtn = root.findViewById(R.id.add_restaurant_btn);
 
         addRestaurantBtn.setOnClickListener(new View.OnClickListener() {
@@ -38,7 +35,8 @@ public class MyRestaurantFragment extends Fragment {
 //                    putString("CHAT_ID", chat_id);
 //                    putInt("CHAT_INDEX", chat_index);
 //                }
-                Navigation.findNavController(view).navigate(R.id.action_navigation_my_restaurants_to_navigation_restaurant);
+                Navigation.findNavController(view)
+                        .navigate(MyRestaurantFragmentDirections.actionNavigationMyRestaurantsToNavigationRestaurant("ADD", ""));
             }
         });
 
