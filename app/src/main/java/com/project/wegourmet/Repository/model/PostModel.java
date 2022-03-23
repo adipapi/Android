@@ -5,6 +5,7 @@ import android.os.Handler;
 import android.os.Looper;
 
 import androidx.core.os.HandlerCompat;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -27,9 +28,20 @@ public class PostModel {
     MutableLiveData<Post> post = new MutableLiveData<Post>();
     MutableLiveData<List<Post>> posts = new MutableLiveData<List<Post>>();
 
+    public enum PostListLoadingState {
+        loading,
+        loaded
+    }
+
+    MutableLiveData<PostListLoadingState> postListLoadingState = new MutableLiveData<PostListLoadingState>();
+
+    public LiveData<PostListLoadingState> getPostListLoadingState() {
+        return postListLoadingState;
+    }
 
     public MutableLiveData<List<Post>>
     getPostsByRestaurant(String restaurantId) {
+            postListLoadingState.setValue(PostListLoadingState.loading);
             executor.execute(() -> {
                 List<Post> postsByRestaurant = AppLocalDb.db.postDao().getPostsByRestaurant(restaurantId);
 
@@ -42,6 +54,7 @@ public class PostModel {
                 executor.execute(() -> {
                     AppLocalDb.db.postDao().insertMany((List<Post>) fbPostsByRestaurant);
                     posts.postValue((List<Post>) fbPostsByRestaurant);
+                    postListLoadingState.postValue(PostListLoadingState.loaded);
                 });
             });
 

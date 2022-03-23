@@ -18,11 +18,11 @@ import java.util.List;
 public class PostAdapter extends RecyclerView.Adapter<ViewHolder>{
 
     public List<Post> posts;
-    OnPostClickListener editListener;
+    OnPostClickListener listener;
     OnPostClickListener deleteListener;
 
     public void setOnEditClickListener(OnPostClickListener listener){
-        this.editListener = listener;
+        this.listener = listener;
     }
     public void setOnDeleteClickListener(OnPostClickListener listener){
         this.deleteListener = listener;
@@ -37,7 +37,7 @@ public class PostAdapter extends RecyclerView.Adapter<ViewHolder>{
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.post_in_grid,parent,false);
-        ViewHolder holder = new ViewHolder(view,editListener, deleteListener);
+        ViewHolder holder = new ViewHolder(view,listener, deleteListener);
         return holder;
     }
 
@@ -63,30 +63,32 @@ interface OnPostClickListener{
 // stores and recycles views as they are scrolled off screen
 class ViewHolder extends RecyclerView.ViewHolder{
     ImageView postImage;
-    ImageButton editBtn;
     ImageButton deleteBtn;
 
-    public ViewHolder(View itemView, OnPostClickListener editListener, OnPostClickListener deleteListener) {
+    public ViewHolder(View itemView, OnPostClickListener listener, OnPostClickListener deleteListener) {
         super(itemView);
         postImage = itemView.findViewById(R.id.post_in_list);
-        editBtn = itemView.findViewById(R.id.edit_post_btn);
         deleteBtn = itemView.findViewById(R.id.delete_post_btn);
 
-        editBtn.setOnClickListener(new View.OnClickListener() {
+        itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 int pos = getAdapterPosition();
-                editListener.onItemClick(view,pos);
+                listener.onItemClick(view,pos);
             }
         });
 
-        deleteBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                int pos = getAdapterPosition();
-                deleteListener.onItemClick(view, pos);
-            }
-        });
+        if(deleteListener != null) {
+            deleteBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    int pos = getAdapterPosition();
+                    deleteListener.onItemClick(view, pos);
+                }
+            });
+        } else {
+            deleteBtn.setVisibility(View.INVISIBLE);
+        }
     }
 
     void bind(Post post){

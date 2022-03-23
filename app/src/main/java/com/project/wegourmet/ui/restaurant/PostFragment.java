@@ -21,6 +21,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.project.wegourmet.R;
 import com.project.wegourmet.Repository.model.PostModel;
 import com.project.wegourmet.Repository.model.UserModel;
@@ -62,6 +63,7 @@ public class PostFragment extends Fragment {
         postText = root.findViewById(R.id.post_text);
 
         String postId = PostFragmentArgs.fromBundle(getArguments()).getPostId();
+        String postMode = PostFragmentArgs.fromBundle(getArguments()).getPostMode();
 
         if(postId != null && !postId.isEmpty()) {
             postViewModel.getPostById(postId);
@@ -71,6 +73,13 @@ public class PostFragment extends Fragment {
             });
         }
 
+       if(postMode == "VIEW") {
+           savePostBtn.setVisibility(View.INVISIBLE);
+           camBtn.setVisibility(View.INVISIBLE);
+           galleryBtn.setVisibility(View.INVISIBLE);
+           postText.setFocusable(false);
+           postText.setFocusable(false);
+       }
 
         savePostBtn.setOnClickListener(v -> {
             save();

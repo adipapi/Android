@@ -24,22 +24,27 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.project.wegourmet.R;
+import com.project.wegourmet.Repository.model.PostModel;
 import com.project.wegourmet.Repository.model.RestaurantModel;
+import com.project.wegourmet.Repository.model.UserModel;
 import com.project.wegourmet.databinding.FragmentCreateEditRestaurantBinding;
 import com.project.wegourmet.model.Post;
 import com.project.wegourmet.model.Restaurant;
 import com.project.wegourmet.ui.home.RestaurantTypeEnum;
 import com.squareup.picasso.Picasso;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class RestaurantFragment extends Fragment {
     private static final int REQUEST_CAMERA = 1;
+    private static final int REQUEST_CODE_LOAD_IMAGE = 0;
     private FragmentCreateEditRestaurantBinding binding;
     Button saveButton;
     ImageView restaurantImage;
@@ -57,6 +62,7 @@ public class RestaurantFragment extends Fragment {
     RecyclerView postsRv;
     PostAdapter adapter;
     List<Post> posts;
+    SwipeRefreshLayout swipeRefresh;
     RestaurantViewModel restaurantViewModel;
     private FloatingActionButton addPostBtn;
 
@@ -70,6 +76,10 @@ public class RestaurantFragment extends Fragment {
 
         String restaurantMode = RestaurantFragmentArgs.fromBundle(getArguments()).getRestaurantMode();
         String restaurantId = RestaurantFragmentArgs.fromBundle(getArguments()).getRestaurantId();
+
+
+        swipeRefresh = root.findViewById(R.id.posts_swiperefresh);
+        swipeRefresh.setOnRefreshListener(() -> restaurantViewModel.getPostsByRestaurant(restaurantId));
 
         saveButton = root.findViewById(R.id.save_restaurant_btn);
         name = root.findViewById(R.id.restaurant_name);
@@ -116,28 +126,31 @@ public class RestaurantFragment extends Fragment {
         adapter = new PostAdapter(posts);
         postsRv.setAdapter(adapter);
 
+
         adapter.setOnEditClickListener(new OnPostClickListener() {
             @Override
             public void onItemClick(View v,int position) {
                 String postId = posts.get(position).getId();
                 if (Navigation.findNavController(getView()).getCurrentDestination().getId() == R.id.navigation_restaurant) {
-                    Navigation.findNavController(getView()).navigate(RestaurantFragmentDirections.actionNavigationRestaurantToNavigationPost(postId, "EDIT", restaurantId));
+                    Navigation.findNavController(getView()).navigate(RestaurantFragmentDirections.actionNavigationRestaurantToNavigationPost(postId,restaurantMode, restaurantId));
                 }
             }
         });
 
-        adapter.setOnDeleteClickListener(new OnPostClickListener() {
-            @Override
-            public void onItemClick(View v,int position) {
-                restaurantViewModel.deleteRestaurantPost(posts.get(position), position, () -> {
-                    Toast.makeText(getActivity().getApplicationContext(), "Saved successfully",Toast.LENGTH_SHORT).show();
-                });
-                restaurantViewModel.posts.observe(getViewLifecycleOwner(), (updatedPosts) -> {
-                    adapter.posts = updatedPosts;
-                    adapter.notifyDataSetChanged();
-                });
-            }
-        });
+        if(restaurantMode != "VIEW") {
+            adapter.setOnDeleteClickListener(new OnPostClickListener() {
+                @Override
+                public void onItemClick(View v,int position) {
+                    restaurantViewModel.deleteRestaurantPost(posts.get(position), position, () -> {
+                        Toast.makeText(getActivity().getApplicationContext(), "Saved successfully",Toast.LENGTH_SHORT).show();
+                    });
+                    restaurantViewModel.posts.observe(getViewLifecycleOwner(), (updatedPosts) -> {
+                        adapter.posts = updatedPosts;
+                        adapter.notifyDataSetChanged();
+                    });
+                }
+            });
+        }
 
         if(!restaurantId.isEmpty()) {
             restaurantViewModel.getRestaurantById(restaurantId, (rest -> {
@@ -154,16 +167,31 @@ public class RestaurantFragment extends Fragment {
                             .into(restaurantImage);
                 }
             }));
+
             restaurantViewModel.getPostsByRestaurant(restaurantId);
             restaurantViewModel.posts.observe(getViewLifecycleOwner(), (postsByRestaurants) -> {
                 posts = postsByRestaurants;
                 adapter.posts = postsByRestaurants;
                 adapter.notifyDataSetChanged();
             });
+
+            swipeRefresh.setRefreshing(PostModel.instance.getPostListLoadingState().getValue() == PostModel.PostListLoadingState.loading);
+            PostModel.instance.getPostListLoadingState().observe(getViewLifecycleOwner(), postListLoadingState -> {
+                if (postListLoadingState == PostModel.PostListLoadingState.loading){
+                    swipeRefresh.setRefreshing(true);
+                }else{
+                    swipeRefresh.setRefreshing(false);
+                }
+
+            });
         }
 
         camBtn.setOnClickListener(v -> {
             openCam();
+        });
+
+        galleryBtn.setOnClickListener(v -> {
+            openGallery();
         });
 
         addPostBtn.setOnClickListener(v -> {
@@ -237,6 +265,12 @@ public class RestaurantFragment extends Fragment {
         }
     }
 
+    private void openGallery() {
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        intent.setType("image/*");
+        startActivityForResult(intent, REQUEST_CODE_LOAD_IMAGE);
+    }
+
     private void openCam() {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         startActivityForResult(intent,REQUEST_CAMERA);
@@ -245,12 +279,17 @@ public class RestaurantFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_CAMERA){
-            if (resultCode == Activity.RESULT_OK){
-                Bundle extras = data.getExtras();
-                imageBitmap = (Bitmap) extras.get("data");
-                restaurantImage.setImageBitmap(imageBitmap);
+        if (requestCode == REQUEST_CODE_LOAD_IMAGE && resultCode == Activity.RESULT_OK && data != null) {
+            try {
+                imageBitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), data.getData());
+            } catch (IOException e) {
+                e.printStackTrace();
             }
+            restaurantImage.setImageBitmap(imageBitmap);
+        } else if (requestCode == REQUEST_CAMERA && resultCode == Activity.RESULT_OK && data != null) {
+            Bundle extras = data.getExtras();
+            imageBitmap = (Bitmap) extras.get("data");
+            restaurantImage.setImageBitmap(imageBitmap);
         }
     }
 

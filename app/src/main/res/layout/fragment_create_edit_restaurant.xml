@@ -8,8 +8,8 @@
 
     <EditText
         android:id="@+id/location_y"
-        android:layout_width="114dp"
-        android:layout_height="39dp"
+        android:layout_width="117dp"
+        android:layout_height="41dp"
         android:layout_marginStart="8dp"
         android:ems="10"
         android:hint="y coordinate"
@@ -82,7 +82,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/scrollView2"
+        app:layout_constraintTop_toBottomOf="@+id/posts_swiperefresh"
         app:layout_constraintVertical_bias="0.231" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -95,10 +95,10 @@
         android:src="@android:drawable/ic_menu_add"
         android:tint="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/scrollView2"
+        app:layout_constraintEnd_toEndOf="@+id/posts_swiperefresh"
         app:layout_constraintHorizontal_bias="0.963"
-        app:layout_constraintStart_toStartOf="@+id/scrollView2"
-        app:layout_constraintTop_toTopOf="@+id/scrollView2"
+        app:layout_constraintStart_toStartOf="@+id/posts_swiperefresh"
+        app:layout_constraintTop_toTopOf="@+id/posts_swiperefresh"
         app:layout_constraintVertical_bias="0.402" />
 
     <Button
@@ -124,7 +124,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.771"
         app:layout_constraintStart_toEndOf="@+id/restaurant_phone"
-        app:layout_constraintTop_toBottomOf="@+id/scrollView2"
+        app:layout_constraintTop_toBottomOf="@+id/posts_swiperefresh"
         app:layout_constraintVertical_bias="0.428" />
 
     <EditText
@@ -162,27 +162,27 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_begin="77dp" />
 
-    <ScrollView
-        android:id="@+id/scrollView2"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/posts_swiperefresh"
         android:layout_width="412dp"
         android:layout_height="235dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.382"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/restaurant_image"
-        app:layout_constraintVertical_bias="0.037">
+        app:layout_constraintVertical_bias="0.028">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/restaurant_posts_rv"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
-    </ScrollView>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <EditText
         android:id="@+id/location_x"
-        android:layout_width="106dp"
-        android:layout_height="37dp"
+        android:layout_width="116dp"
+        android:layout_height="41dp"
         android:layout_marginStart="13dp"
         android:ems="10"
         android:hint="x coordinate"
