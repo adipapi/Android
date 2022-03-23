@@ -15,12 +15,11 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.739"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/post_text" />
+        app:layout_constraintTop_toBottomOf="@+id/usernameProfile" />
 
     <ImageView
-        android:id="@+id/post_image"
+        android:id="@+id/profileImage"
         android:layout_width="263dp"
-        android:background="@color/browser_actions_bg_grey"
         android:layout_height="225dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -31,31 +30,31 @@
         tools:src="@tools:sample/avatars" />
 
     <ImageButton
-        android:id="@+id/post_cam_btn"
+        android:id="@+id/main_cam_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@android:drawable/ic_menu_camera"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.631"
-        app:layout_constraintStart_toEndOf="@+id/post_image"
+        app:layout_constraintStart_toEndOf="@+id/profileImage"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.13" />
 
     <ImageButton
-        android:id="@+id/post_gallery_btn"
+        android:id="@+id/main_gallery_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@android:drawable/ic_menu_gallery"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.631"
-        app:layout_constraintStart_toEndOf="@+id/post_image"
-        app:layout_constraintTop_toBottomOf="@+id/post_cam_btn"
+        app:layout_constraintStart_toEndOf="@+id/profileImage"
+        app:layout_constraintTop_toBottomOf="@+id/main_cam_btn"
         app:layout_constraintVertical_bias="0.121" />
 
     <EditText
-        android:id="@+id/post_text"
+        android:id="@+id/usernameProfile"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
@@ -64,7 +63,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.736"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/post_image"
+        app:layout_constraintTop_toBottomOf="@+id/profileImage"
         app:layout_constraintVertical_bias="0.283" />
 
     <TextView
@@ -74,10 +73,10 @@
         android:text="username"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/post_text"
+        app:layout_constraintEnd_toStartOf="@+id/usernameProfile"
         app:layout_constraintHorizontal_bias="0.653"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/post_image"
+        app:layout_constraintTop_toBottomOf="@+id/profileImage"
         app:layout_constraintVertical_bias="0.296" />
 
     <Button
@@ -89,7 +88,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.3"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/post_text" />
+        app:layout_constraintTop_toBottomOf="@+id/usernameProfile" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline4"

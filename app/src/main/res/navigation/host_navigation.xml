@@ -27,7 +27,7 @@
             android:name="restaurantMode"
             app:argType="string" />
         <argument
-            android:name="restaurantName"
+            android:name="restaurantId"
             app:argType="string" />
     </fragment>
 
@@ -51,5 +51,9 @@
         android:id="@+id/navigation_profile"
         android:name="com.project.wegourmet.ui.profile.ProfileFragment"
         android:label="@string/title_profile"
-        tools:layout="@layout/fragment_profile" />
+        tools:layout="@layout/fragment_profile">
+        <argument
+            android:name="rsId"
+            app:argType="string" />
+    </fragment>
 </navigation>

@@ -4,26 +4,65 @@ import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "restaurants", primaryKeys = {"hostId", "name"})
+import com.google.firebase.Timestamp;
+import com.google.firebase.firestore.FieldValue;
+
+import java.util.HashMap;
+import java.util.Map;
+
+@Entity(tableName = "restaurants")
 public class Restaurant {
+    final public static String COLLECTION_NAME = "restaurants";
+    @PrimaryKey
     @NonNull
-    String hostId;
-    @NonNull
-    String name;
-    String address;
-    String phone;
-    String type;
-    String mainImageUrl;
+    String id = "";
+    String hostId ="";
+    String name="";
+    String address="";
+    String phone="";
+    String type="";
+    String mainImageUrl="";
+    String description="";
+    Double location_x;
+    Double location_y;
+    Long updateDate= new Long(0);
 
     public Restaurant(){}
 
     public Restaurant(String hostId, String name, String address, String phone,
-                      String type) {
+                      String type, String description, Double location_x, Double location_y) {
         this.hostId = hostId;
         this.name = name;
         this.address = address;
         this.phone = phone;
         this.type = type;
+        this.description = description;
+        this.location_x = location_x;
+        this.location_y = location_y;
+    }
+
+    public Double getLocation_x() {
+        return location_x;
+    }
+
+    public void setLocation_x(Double location_x) {
+        this.location_x = location_x;
+    }
+
+    public Double getLocation_y() {
+        return location_y;
+    }
+
+    public void setLocation_y(Double location_y) {
+        this.location_y = location_y;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getHostId() {
@@ -70,7 +109,59 @@ public class Restaurant {
         return mainImageUrl;
     }
 
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
     public void setMainImageUrl(String mainImageUrl) {
         this.mainImageUrl = mainImageUrl;
+    }
+
+    public Long getUpdateDate() {
+        return updateDate;
+    }
+
+    public void setUpdateDate(Long updateDate) {
+        this.updateDate = updateDate;
+    }
+
+
+    public Map<String, Object> toJson() {
+        Map<String, Object> json = new HashMap<String, Object>();
+        json.put("id",id);
+        json.put("hostId",id);
+        json.put("name",name);
+        json.put("phone",phone);
+        json.put("type",type);
+        json.put("mainImageUrl",mainImageUrl);
+        json.put("updateDate", FieldValue.serverTimestamp());
+        json.put("mainImageUrl",description);
+        return json;
+    }
+
+    public static Restaurant create(Map<String, Object> json) {
+        String id = (String) json.get("id");
+        String hostId = (String) json.get("hostId");
+        String name = (String) json.get("name");
+        String address = (String) json.get("address");
+        String phone = (String) json.get("phone");
+        String type = (String) json.get("type");
+        String description = (String) json.get("description");
+        Double locationX = (Double) json.get("location_x");
+        Double locationY = (Double) json.get("location_y");
+        String mainImageUrl = (String) json.get("mainImageUrl");
+//        Timestamp ts = (Timestamp)json.get("updateDate");
+//        Long updateDate = ts.getSeconds();
+
+        Restaurant restaurant = new Restaurant(hostId,name,address,phone,type,description,locationX,locationY);
+        restaurant.setId(id);
+//        restaurant.setUpdateDate(updateDate);
+        restaurant.setMainImageUrl(mainImageUrl);
+        return restaurant;
+
     }
 }

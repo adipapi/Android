@@ -1,19 +1,22 @@
 package com.project.wegourmet.Repository.model;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 
 import androidx.core.os.HandlerCompat;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.project.wegourmet.Repository.modelFirbase.RestaurantModelFirebase;
-import com.project.wegourmet.Repository.modelFirbase.UserModelFirebase;
+import com.project.wegourmet.WegourmetApplication;
+import com.project.wegourmet.model.Post;
 import com.project.wegourmet.model.Restaurant;
-import com.project.wegourmet.model.User;
 
+import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
@@ -22,55 +25,160 @@ public class RestaurantModel {
     public Executor executor = Executors.newFixedThreadPool(1);
     public Handler mainThread = HandlerCompat.createAsync(Looper.getMainLooper());
     RestaurantModelFirebase modelFirebase = new RestaurantModelFirebase();
-
-    // Methods
     MutableLiveData<Restaurant> restaurant = new MutableLiveData<Restaurant>();
 
-//    public MutableLiveData<User> getUserById(String id) {
-//            executor.execute(() -> {
-//                User userById = AppLocalDb.db.userDao().getUserById(id);
-//
-//                if(userById != null) {
-//                    user.postValue(userById);
-//                }
-//            });
-//
-//            modelFirebase.getUserByID(id, (fbUser) -> {
-//                executor.execute(() -> {
-//                    AppLocalDb.db.userDao().insert((User) fbUser);
-//                    user.postValue((User) fbUser);
-//                });
-//            });
-//
-//            return user;
+
+    public enum RestaurantListLoadingState {
+        loading,
+        loaded
+    }
+
+    MutableLiveData<RestaurantListLoadingState> restaurantListLoadingState = new MutableLiveData<RestaurantListLoadingState>();
+
+    public LiveData<RestaurantListLoadingState> getRestaurantListLoadingState() {
+        return restaurantListLoadingState;
+    }
+
+//    private RestaurantModel() {
+//        restaurantListLoadingState.setValue(RestaurantListLoadingState.loaded);
 //    }
+
+    MutableLiveData<List<Restaurant>> restaurantsList = new MutableLiveData<List<Restaurant>>();
+
+    public MutableLiveData<List<Restaurant>> getAll() {
+        executor.execute(() -> {
+            List<Restaurant> rests = AppLocalDb.db.restaurantDao().getAll();
+
+            if(rests != null) {
+                restaurantsList.postValue(rests);
+            }
+        });
+
+        modelFirebase.getAllRestaurants((fbRestaurants) -> {
+            executor.execute(() -> {
+                AppLocalDb.db.restaurantDao().insertMany((List<Restaurant>) fbRestaurants);
+                restaurantsList.postValue((List<Restaurant>) fbRestaurants);
+            });
+        });
+        if (restaurantsList.getValue() == null) {
+//            refreshRestaurantList();
+        }
+        ;
+        return restaurantsList;
+    }
+
+
+    MutableLiveData<List<Restaurant>> restaurantsByHost = new MutableLiveData<List<Restaurant>>();
+
+    public MutableLiveData<List<Restaurant>> getRestaurantsByHost(String hostId) {
+        executor.execute(() -> {
+            List<Restaurant> rests = AppLocalDb.db.restaurantDao().getRestaurantsByHost(hostId);
+
+            if(rests != null) {
+                restaurantsByHost.postValue(rests);
+            }
+        });
+
+        modelFirebase.getRestaurantsByHost(hostId,(fbRestaurants) -> {
+            executor.execute(() -> {
+                AppLocalDb.db.restaurantDao().insertMany((List<Restaurant>) fbRestaurants);
+                restaurantsByHost.postValue((List<Restaurant>) fbRestaurants);
+            });
+        });
+
+        return restaurantsByHost;
+    }
+
+//    public void refreshRestaurantList() {
+//        restaurantListLoadingState.setValue(RestaurantListLoadingState.loading);
 //
-    public void addRestaurant(Restaurant newRestaurant, OnFailureListener failureListener) {
-        modelFirebase.addRestaurant(newRestaurant, new OnSuccessListener() {
+//        // get last local update date
+//        Long lastUpdateDate = WegourmetApplication.getContext().getSharedPreferences("TAG", Context.MODE_PRIVATE).getLong("RestaurantsLastUpdateDate", 0);
+//
+//        executor.execute(() -> {
+//            List<Restaurant> stList = AppLocalDb.db.restaurantDao().getAll();
+//            restaurantsList.postValue(stList);
+//        });
+//
+//        // firebase get all updates since lastLocalUpdateDate
+//        modelFirebase.getAllRestaurants(lastUpdateDate, new RestaurantModelFirebase.GetAllRestaurantsListener() {
+//            @Override
+//            public void onComplete(List<Restaurant> list) {
+//                // add all records to the local db
+//                executor.execute(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        Long lud = new Long(0);
+//                        Log.d("TAG", "fb returned " + list.size());
+//                        for (Restaurant restaurant : list) {
+//                            AppLocalDb.db.restaurantDao().insertAll(restaurant);
+//                            if (lud < restaurant.getUpdateDate()) {
+//                                lud = restaurant.getUpdateDate();
+//                            }
+//                        }
+//                        // update last local update date
+//                        WegourmetApplication.getContext()
+//                                .getSharedPreferences("TAG", Context.MODE_PRIVATE)
+//                                .edit()
+//                                .putLong("RestaurantsLastUpdateDate", lud)
+//                                .commit();
+//
+//                        //return all data to caller
+//                        List<Restaurant> stList = AppLocalDb.db.restaurantDao().getAll();
+//                        restaurantsList.postValue(stList);
+//                        restaurantListLoadingState.postValue(RestaurantListLoadingState.loaded);
+//                    }
+//                });
+//            }
+//        });
+//    }
+
+
+    public void addRestaurant(Restaurant addedRestaurant, Runnable success) {
+        modelFirebase.addRestaurant(addedRestaurant, new OnSuccessListener() {
+                 @Override
+                public void onSuccess(Object o) {
+                    executor.execute(() -> {
+                        AppLocalDb.db.restaurantDao().insert(addedRestaurant);
+                        restaurant.postValue(addedRestaurant);
+                        mainThread.post(success);
+                    });
+                }
+        });
+//            listener.onSuccess();
+//            refreshRestaurantList();
+    }
+
+    public void setRestaurant(Restaurant setRestaurant, Runnable success) {
+        modelFirebase.setRestaurant(setRestaurant, new OnSuccessListener() {
             @Override
             public void onSuccess(Object o) {
                 executor.execute(() -> {
-                    AppLocalDb.db.restaurantDao().insert(newRestaurant);
-                    restaurant.postValue(newRestaurant);
-                    onSuccess(o);
+                    AppLocalDb.db.restaurantDao().insert(setRestaurant);
+                    restaurant.postValue(setRestaurant);
+                    mainThread.post(success);
                 });
             }
-        }, failureListener);
+        });
+//            listener.onSuccess();
+//            refreshRestaurantList();
     }
-//
-//    public void setUser(User editedUser, Runnable success) {
-//        modelFirebase.setUser(editedUser, (e) -> {
-//            executor.execute(() -> {
-//                AppLocalDb.db.userDao().insert(editedUser);
-//                user.postValue(editedUser);
-//                mainThread.post(() -> {
-//                    success.run();
-//                });
-//
-//            });
-//        });
+
+    public interface GetRestaurantById {
+        void onComplete(Restaurant restaurant);
+    }
+
+    public Restaurant getRestaurantById(String restaurantId, GetRestaurantById listener) {
+        modelFirebase.getRestaurantById(restaurantId, listener);
+        return null;
+    }
+
+//    public Restaurant getRestaurantByName(String restaurantName, OnSU listener) {
+//        modelFirebase.getRestaurantById(restaurantId, listener);
+//        return null;
 //    }
-//
+
+
     public interface SaveImageListener {
         void onComplete(String url);
     }
@@ -78,6 +186,43 @@ public class RestaurantModel {
     public void saveImage(Bitmap imageBitmap, String imageName, SaveImageListener listener) {
         modelFirebase.saveImage(imageBitmap, imageName, listener);
     }
+
+//    // Methods
+//    MutableLiveData<Restaurant> restaurant = new MutableLiveData<Restaurant>();
+//    MutableLiveData<List<Restaurant>> restaurants = new MutableLiveData<List<Restaurant>>();
+//
+//    public MutableLiveData<List<Restaurant>> getRestaurantsList() {
+//            executor.execute(() -> {
+//                List<Restaurant> restaurants = AppLocalDb.db.restaurantDao().getAll();
+//
+//                if(restaurants != null) {
+//                    restaurants.postValue(restaurants);
+//                }
+//            });
+//
+//            return restaurants;
+//    }
+//
+//    public void addRestaurant(Restaurant newRestaurant, OnFailureListener failureListener) {
+//        modelFirebase.addRestaurant(newRestaurant, new OnSuccessListener() {
+//            @Override
+//            public void onSuccess(Object o) {
+//                executor.execute(() -> {
+//                    AppLocalDb.db.restaurantDao().insert(newRestaurant);
+//                    restaurant.postValue(newRestaurant);
+//                    onSuccess(o);
+//                });
+//            }
+//        }, failureListener);
+//    }
+//
+//    public interface SaveImageListener {
+//        void onComplete(String url);
+//    }
+//
+//    public void saveImage(Bitmap imageBitmap, String imageName, SaveImageListener listener) {
+//        modelFirebase.saveImage(imageBitmap, imageName, listener);
+//    }
 
 
 }

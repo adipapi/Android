@@ -51,10 +51,10 @@ public class ProfileFragment extends Fragment {
             binding = FragmentProfileBinding.inflate(inflater, container, false);
             View root = binding.getRoot();
 
-            profileImage = root.findViewById(R.id.post_image);
-            username = root.findViewById(R.id.post_text);
-            camBtn = root.findViewById(R.id.post_cam_btn);
-            galleryBtn = root.findViewById(R.id.post_gallery_btn);
+            profileImage = root.findViewById(R.id.profileImage);
+            username = root.findViewById(R.id.usernameProfile);
+            camBtn = root.findViewById(R.id.main_cam_btn);
+            galleryBtn = root.findViewById(R.id.main_gallery_btn);
             saveBtn = root.findViewById(R.id.saveProfileBtn);
             signOutBtn = root.findViewById(R.id.profile_logout_btn);
 

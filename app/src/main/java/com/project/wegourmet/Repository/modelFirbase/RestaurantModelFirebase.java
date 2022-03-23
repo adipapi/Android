@@ -3,19 +3,29 @@ package com.project.wegourmet.Repository.modelFirbase;
 import android.graphics.Bitmap;
 import android.net.Uri;
 
+import androidx.annotation.NonNull;
+
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreSettings;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.project.wegourmet.Repository.model.RestaurantModel;
-import com.project.wegourmet.Repository.model.UserModel;
 import com.project.wegourmet.model.Restaurant;
-import com.project.wegourmet.model.User;
-
 import java.io.ByteArrayOutputStream;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 
 public class RestaurantModelFirebase {
@@ -23,39 +33,103 @@ public class RestaurantModelFirebase {
     FirebaseStorage storage = FirebaseStorage.getInstance();
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-    // Methods
-    public void addRestaurant(Restaurant restaurant, OnSuccessListener successListener, OnFailureListener failureListener) {
-        db.collection(COLLECTION_NAME).add(restaurant)
-                .addOnSuccessListener(successListener)
-                .addOnFailureListener(failureListener);
-    }
-//
-//    public void setUser(User user, OnSuccessListener listener) {
-//        String id = FirebaseAuth.getInstance().getCurrentUser().getUid();
-//
-//        db.collection(COLLECTION_NAME)
-//                .whereEqualTo("id", id)
-//                .get().addOnSuccessListener((querySnapshot) -> {
-//                   querySnapshot.getDocuments().get(0).getReference().set(user)
-//                   .addOnSuccessListener(listener);
-//                });
+//    public RestaurantModelFirebase(){
+//        FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
+//                .setPersistenceEnabled(false)
+//                .build();
+//        db.setFirestoreSettings(settings);
 //    }
-//
-//    public void getUserByID(String id,OnSuccessListener successListener) {
-//        db.collection(COLLECTION_NAME)
-//                .whereEqualTo("id", id)
-//                .limit(1)
+
+    public interface GetAllRestaurantsListener{
+        void onComplete(List<Restaurant> list);
+    }
+
+    // Methods
+    public void setRestaurant(Restaurant restaurant,OnSuccessListener successListener) {
+        db.collection(Restaurant.COLLECTION_NAME).document(restaurant.getId()).set(restaurant).addOnSuccessListener(successListener);
+    }
+
+    // Methods
+    public void addRestaurant(Restaurant restaurant,OnSuccessListener successListener) {
+        DocumentReference ref = db.collection(COLLECTION_NAME).document();
+        restaurant.setId(ref.getId());
+        ref.set(restaurant)
+                .addOnSuccessListener(successListener);
+    }
+
+    public void getAllRestaurants(RestaurantModelFirebase.GetAllRestaurantsListener listener) {
+        db.collection(Restaurant.COLLECTION_NAME)
+//                .whereGreaterThanOrEqualTo("updateDate",new Timestamp(lastUpdateDate,0))
+                .get()
+                .addOnCompleteListener(task -> {
+                    List<Restaurant> list = new LinkedList<Restaurant>();
+                    if (task.isSuccessful()){
+                        for (QueryDocumentSnapshot doc : task.getResult()){
+                            Restaurant restaurant = Restaurant.create(doc.getData());
+                            if (restaurant != null){
+                                list.add(restaurant);
+                            }
+                        }
+                    }
+                    listener.onComplete(list);
+                });
+    }
+
+    public void getRestaurantsByHost(String hostId, RestaurantModelFirebase.GetAllRestaurantsListener listener) {
+        db.collection(Restaurant.COLLECTION_NAME)
+                .whereEqualTo("hostId", hostId )
+//                .whereGreaterThanOrEqualTo("updateDate",new Timestamp(lastUpdateDate,0))
+                .get()
+                .addOnCompleteListener(task -> {
+                    List<Restaurant> list = new LinkedList<Restaurant>();
+                    if (task.isSuccessful()){
+                        for (QueryDocumentSnapshot doc : task.getResult()){
+                            Restaurant restaurant = Restaurant.create(doc.getData());
+                            if (restaurant != null){
+                                list.add(restaurant);
+                            }
+                        }
+                    }
+                    listener.onComplete(list);
+                });
+    }
+
+
+    public void getRestaurantById(String restaurantId, RestaurantModel.GetRestaurantById listener) {
+        db.collection(Restaurant.COLLECTION_NAME)
+                .document(restaurantId)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        Restaurant restaurant = null;
+                        if (task.isSuccessful() & task.getResult()!= null && task.getResult().getData() != null){
+                            restaurant = Restaurant.create(task.getResult().getData());
+                        }
+                        listener.onComplete(restaurant);
+                    }
+                });
+
+    }
+
+//    public void getRestaurantByName(String restaurantName, OnSuccessListener listener) {
+//        db.collection(Restaurant.COLLECTION_NAME)
+//                .document(restaurantId)
 //                .get()
-//                .addOnSuccessListener((querySnapshot) -> {
-//                    User user = querySnapshot.getDocuments().get(0).toObject(User.class);
-//
-//                    if (user != null) {
-//                        successListener.onSuccess(user);
+//                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+//                        Restaurant restaurant = null;
+//                        if (task.isSuccessful() & task.getResult()!= null){
+//                            restaurant = Restaurant.create(task.getResult().getData());
+//                        }
+//                        listener.onComplete(restaurant);
 //                    }
 //                });
-//    };
 //
-//
+//    }
+
+
     public void saveImage(Bitmap imageBitmap, String imageName, RestaurantModel.SaveImageListener listener) {
         StorageReference storageRef = storage.getReference();
         StorageReference imgRef = storageRef.child("restaurants_images/" + imageName);
@@ -77,3 +151,7 @@ public class RestaurantModelFirebase {
                 });
     }
 }
+
+
+
+
