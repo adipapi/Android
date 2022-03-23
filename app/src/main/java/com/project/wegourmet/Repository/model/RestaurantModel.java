@@ -119,8 +119,6 @@ public class RestaurantModel {
                     });
                 }
         });
-//            listener.onSuccess();
-//            refreshRestaurantList();
     }
 
     public void setRestaurant(Restaurant setRestaurant, Runnable success) {

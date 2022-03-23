@@ -94,14 +94,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         getLocationPermission();
         updateLocationUI();
         getDeviceLocation();
-
-        // Add a marker in Sydney and move the camera
-//        LatLng sydney = new LatLng(-34, 151);
-//        mMap.addMarker(new MarkerOptions()
-//                .position(sydney)
-//                .title("Marker in Sydney"));
-//        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
-
         homeViewModel.getRestaurants();
         homeViewModel.restaurants.observe(this, (rests) -> {
             mMap.clear();
@@ -129,10 +121,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                         .hide(mapFragment)
                         .commit();
             }
-//                Intent intent1 = new Intent(context, PopulationCharts.class);
-//                String title = marker.getTitle();
-//                intent1.putExtra("markertitle", title);
-//                startActivity(intent1);
         });
     }
 

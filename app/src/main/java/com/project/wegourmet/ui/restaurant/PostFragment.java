@@ -28,8 +28,6 @@ import com.project.wegourmet.Repository.model.UserModel;
 import com.project.wegourmet.databinding.FragmentHistoryBinding;
 import com.project.wegourmet.databinding.FragmentPostBinding;
 import com.project.wegourmet.model.Post;
-import com.project.wegourmet.model.User;
-import com.project.wegourmet.ui.history.HistoryViewModel;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
@@ -138,8 +136,6 @@ public class PostFragment extends Fragment {
                 });
             }
         }
-
-//        Navigation.findNavController(getView()).navigateUp();
     }
 
     private void openGallery() {

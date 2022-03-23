@@ -82,11 +82,6 @@ public class MyRestaurantFragment extends Fragment {
         addRestaurantBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Bundle arguments = Bundle();
-//                arguments.apply {
-//                    putString("CHAT_ID", chat_id);
-//                    putInt("CHAT_INDEX", chat_index);
-//                }
                 Navigation.findNavController(view)
                         .navigate(MyRestaurantFragmentDirections.actionNavigationMyRestaurantsToNavigationRestaurant("ADD", ""));
             }
