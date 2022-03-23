@@ -7,6 +7,8 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.model.Document;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -16,6 +18,7 @@ import com.project.wegourmet.model.Restaurant;
 import com.project.wegourmet.model.User;
 
 import java.io.ByteArrayOutputStream;
+import java.util.LinkedList;
 
 
 public class RestaurantModelFirebase {
@@ -29,6 +32,26 @@ public class RestaurantModelFirebase {
                 .addOnSuccessListener(successListener)
                 .addOnFailureListener(failureListener);
     }
+
+//    public void getAllRestaurants(OnSuccessListener successListener, OnFailureListener failureListener) {
+//        db.collection(COLLECTION_NAME)
+//                .get()
+//                .addOnCompleteListener(task -> {
+//                    LinkedList<Restaurant> rests =  new LinkedList<Restaurant>();
+//
+//                    if (task.isSuccessful()) {
+//                        for (QueryDocumentSnapshot doc : task.getResult()) {
+//                            Restaurant student = Restaurant.create(doc.getData());
+//                            if (student != null) {
+//                                list.add(student);
+//                            }
+//                        }
+//                    }
+//
+//                    listener(list);
+//                });
+//        };
+//    }
 //
 //    public void setUser(User user, OnSuccessListener listener) {
 //        String id = FirebaseAuth.getInstance().getCurrentUser().getUid();
